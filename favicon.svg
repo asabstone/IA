@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 84" role="img" aria-label="IA Responsable">
+  <path d="M32 8 C 44 30, 54 42, 54 54 A 22 22 0 1 1 10 54 C 10 42, 20 30, 32 8 Z" fill="#2F7E9C" stroke="#283A57" stroke-width="3"/>
+  <g stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity=".92">
+    <line x1="32" y1="42" x2="32" y2="66"/>
+    <line x1="32" y1="53" x2="22" y2="60"/>
+    <line x1="32" y1="53" x2="43" y2="58"/>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="32" cy="42" r="3.4"/><circle cx="22" cy="60" r="2.8"/><circle cx="43" cy="58" r="2.8"/><circle cx="32" cy="66" r="2.8"/>
+  </g>
+</svg>
