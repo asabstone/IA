@@ -1,4 +1,4 @@
-/* IA Responsable para la Investigación — hoja de estilos del sitio del curso
+/* IA Responsable para la Investigación: hoja de estilos del sitio del curso
    Marca: Los Elementales · acento agua · fondo kami · anclaje void · texto sumi */
 :root{
   --kami:#F1F2EF; --kumo:#FBFCFA; --suna:#DEDFD9; --sumi:#1A1B19; --hai:#5A5C57;
@@ -8,11 +8,11 @@
 html{scroll-behavior:smooth;}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
 
-/* bilingual utility — language is set on <body data-lang="es|en"> */
+/* bilingual utility: language is set on <body data-lang="es|en"> */
 body[data-lang="en"] .lang-es{display:none !important;}
 body[data-lang="es"] .lang-en{display:none !important;}
 
-/* language toggle — a fixed pill, legible over the dark banner and the light body */
+/* language toggle: a fixed pill, legible over the dark banner and the light body */
 .langbar{position:fixed; top:12px; right:14px; z-index:60; display:flex; align-items:center; gap:.15rem;
   background:var(--kumo); color:var(--void); border:1px solid var(--suna); border-radius:20px;
   padding:2px 8px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.12em;
@@ -50,14 +50,14 @@ section{padding:50px 0 6px; border-top:1px solid var(--suna);}
 .snum{color:var(--water); font-size:22px; font-weight:700; line-height:1;}
 h2{font-weight:300; font-size:29px; letter-spacing:-.005em; color:var(--void); margin:8px 0 20px;}
 h3{font-weight:700; font-size:18px; margin:26px 0 8px; color:var(--sumi);}
-/* marca maestra — display serif, aligned with Media portfolio + FIT */
+/* marca maestra: display serif, aligned with Media portfolio + FIT */
 h1 .big, h1 .sub, h2, .principle b{font-family:'Cormorant Garamond',Georgia,serif;}
 h1 .big{font-weight:500;}
 p{margin:0 0 15px;} .lead{font-size:19px; color:var(--sumi);}
 ul{margin:0 0 16px; padding-left:0; list-style:none;}
 ul li{position:relative; padding-left:22px; margin-bottom:9px;}
 ul li::before{content:""; position:absolute; left:2px; top:.72em; width:6px; height:6px; background:var(--water); border-radius:50%;}
-/* checklist — "Logrado se ve así" */
+/* checklist: "Logrado se ve así" */
 ul.check{margin:6px 0 16px;}
 ul.check li{padding-left:27px;}
 ul.check li::before{content:"\2610"; left:0; top:0; width:auto; height:auto; background:none; border-radius:0; color:var(--water); font-size:17px; line-height:1.55;}
@@ -103,7 +103,7 @@ td{padding:10px 12px; border-bottom:1px solid var(--suna); vertical-align:top;}
 tr:last-child td{border-bottom:none;}
 .wkn{font-weight:700;}
 
-/* week cards (landing) — whole card is a link */
+/* week cards (landing): whole card is a link */
 .weekgrid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0;}
 a.card{display:block; text-decoration:none; color:inherit; background:var(--kumo); border:1px solid var(--suna);
   border-left:5px solid var(--el); border-radius:10px; padding:18px 20px; transition:transform .12s ease, box-shadow .12s ease;}
@@ -128,7 +128,7 @@ a.card .more{display:inline-block; margin-top:12px; font-size:13px; font-weight:
 .alinks a{font-size:13px; font-weight:600; text-decoration:none; color:var(--water-ink); border:1px solid var(--water); border-radius:20px; padding:6px 15px;}
 .alinks a.primary{background:var(--water); color:#fff; border-color:var(--water);}
 
-/* 06 · eval bands — traffic light: fuego-ink > tierra > viento */
+/* 06 · eval bands: traffic light: fuego-ink > tierra > viento */
 .band{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:22px 0;}
 .bcell{border:1px solid var(--suna); border-radius:9px; padding:20px 18px 18px; background:var(--kumo); border-top:3px solid var(--lv);}
 .bcell b{display:block; color:var(--void); font-size:16px;}

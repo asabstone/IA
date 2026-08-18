@@ -1,13 +1,13 @@
 /* ───────────────────────────────────────────────────────────────────────
    Language toggle (ES ⇄ EN) for the course site.
-   Every translatable bit of text exists twice in the HTML —
-   <span class="lang-es"> and <span class="lang-en"> — and CSS hides whichever
+   Every translatable bit of text exists twice in the HTML, as
+   <span class="lang-es"> and <span class="lang-en">, and CSS hides whichever
    language isn't active (see styles.css). This script flips the
    <body data-lang> switch and remembers the choice, so moving between the
    programa and the session pages keeps your language.
    ─────────────────────────────────────────────────────────────────────── */
 (function () {
-  var DEFAULT_LANG = 'es';                 // Spanish is the default — the class runs in Spanish
+  var DEFAULT_LANG = 'es';                 // Spanish is the default; the class runs in Spanish
   var stored = null;
   try { stored = localStorage.getItem('lang'); } catch (e) { /* private mode */ }
   var fromUrl = null;
