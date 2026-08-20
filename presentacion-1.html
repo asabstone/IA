@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deck · Sesión 1 · ¿Por qué la IA responsable?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,500;0,6..12,700;0,6..12,800;1,6..12,400&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#283A57">
+<style>
+:root{
+  --kami:#F1F2EF; --kumo:#FBFCFA; --suna:#DEDFD9; --sumi:#1A1B19; --hai:#4E524C;
+  --earth:#9C7A45; --earth-ink:#6B5330; --water:#2F7E9C; --water-ink:#255E73;
+  --fire:#DB5A2A; --fire-ink:#A8481C; --wind:#6B8E7F; --wind-ink:#3f6154; --void:#283A57;
+  --sky:#9fd0e0;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{
+  background:var(--void); color:var(--sumi);
+  font-family:'Nunito Sans',system-ui,sans-serif; font-weight:400;
+  -webkit-font-smoothing:antialiased; overflow:hidden;
+}
+.serif{font-family:'Cormorant Garamond',Georgia,serif;}
+
+/* ---------- deck mechanics ---------- */
+.deck{position:fixed; inset:0;}
+.slide{
+  position:absolute; inset:0;
+  display:none; flex-direction:column; justify-content:center;
+  padding:6.5vmin 8.5vmin; background:var(--void); color:var(--kumo);
+}
+.slide.active{display:flex; animation:fade .35s ease;}
+@keyframes fade{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+@media(prefers-reduced-motion:reduce){.slide.active{animation:none;}}
+.slide.dark{background:var(--void); color:var(--kumo);}
+
+/* shared type · mínimo legible elevado para proyección */
+.eyebrow{font-weight:600; text-transform:uppercase; letter-spacing:.24em;
+  font-size:clamp(15px,1.8vmin,21px); color:var(--sky); margin:0 0 3vmin;}
+.stitle{font-weight:300; letter-spacing:-.01em; line-height:1.05;
+  font-size:clamp(34px,7.6vmin,84px); color:#fff;}
+.lead{font-size:clamp(21px,3vmin,33px); line-height:1.48; color:#dbe2e7; margin-top:2.6vmin; max-width:27em;}
+.kick{font-size:clamp(19px,2.4vmin,25px); color:var(--sky); font-weight:700; margin-top:3.4vmin; max-width:36em;}
+
+/* énfasis sobre el fondo cielo */
+.lead b, .slide p b{color:#fff !important;}
+.lead em{color:#fff !important;}
+p[style*='--hai']{color:#dbe2e7 !important;}
+
+/* portada */
+.cover .meta{margin-top:4.4vmin; font-size:clamp(17px,2.2vmin,23px); color:#dbe2e7;}
+.cover .meta b{color:#fff; font-weight:700;}
+.cover .rule{height:4px; width:min(18vmin,150px); background:var(--sky); border-radius:4px; margin:4.4vmin 0 0;}
+.cover .tagline{font-family:'Cormorant Garamond',Georgia,serif; font-style:italic; font-weight:300;
+  font-size:clamp(22px,3.8vmin,42px); line-height:1.22; color:var(--sky); margin-top:3vmin; max-width:24em;}
+.subline{margin-top:1.6vmin; font-size:clamp(17px,2.2vmin,23px); color:var(--sky);}
+
+/* bullets (preséntate) */
+ul.blist{list-style:none; margin-top:2.4vmin;}
+ul.blist li{position:relative; padding-left:3.4vmin; margin-bottom:1.5vmin;
+  font-size:clamp(21px,2.7vmin,29px); line-height:1.38; color:#e4e8ea;}
+ul.blist li::before{content:""; position:absolute; left:0; top:.55em;
+  width:1.1vmin; height:1.1vmin; min-width:9px; min-height:9px; background:var(--sky); border-radius:50%;}
+ul.blist li b{color:#fff;}
+
+/* secciones (tarjetas claras) */
+.rev{display:flex; flex-direction:column; gap:1.8vmin; margin-top:3.4vmin;}
+.rev .sec{background:var(--kumo); border:1px solid var(--suna); border-left:6px solid var(--water);
+  border-radius:11px; padding:2.6vmin 3.2vmin;}
+.rev .sec .id{font-weight:700; color:var(--water-ink); font-size:clamp(14px,1.8vmin,18px); letter-spacing:.05em;}
+.rev .sec b{display:block; color:var(--void); font-size:clamp(19px,2.6vmin,27px); font-weight:700; margin:.4vmin 0;}
+.rev .sec span{color:var(--hai); font-size:clamp(18px,2.15vmin,24px);}
+.rev.tight{gap:1.3vmin; margin-top:3vmin;}
+.rev.tight .sec{padding:1.9vmin 3vmin; display:flex; align-items:baseline; gap:2.2vmin; flex-wrap:wrap;}
+.rev.tight .sec .id{min-width:7em; color:var(--water); flex-shrink:0;}
+.rev.tight .sec b{display:inline; margin:0; font-size:clamp(19px,2.4vmin,26px);}
+
+/* grids de tarjetas */
+.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:2vmin; margin-top:3.4vmin;}
+.card{background:var(--kumo); border:1px solid var(--suna); border-top:4px solid var(--water);
+  border-radius:11px; padding:2.8vmin 2.8vmin; display:flex; flex-direction:column; gap:.9vmin;}
+.card .n{font-weight:800; color:var(--water); font-size:clamp(16px,2vmin,21px); font-variant-numeric:tabular-nums;}
+.card b{color:var(--void); font-size:clamp(20px,2.5vmin,28px); font-weight:700; line-height:1.15;}
+.card span{color:var(--hai); font-size:clamp(18px,2.15vmin,24px); line-height:1.4;}
+.card.lv-no{border-top-color:var(--earth);} .card.lv-no .n{color:var(--earth-ink);}
+.card.lv-si{border-top-color:var(--water);} .card.lv-si .n{color:var(--water-ink);}
+.card.lv-mas{border-top-color:var(--wind);} .card.lv-mas .n{color:var(--wind-ink);}
+
+.costs{display:grid; grid-template-columns:repeat(2,1fr); gap:2vmin; margin-top:1vmin;}
+.cost{background:var(--kumo); border:1px solid var(--suna); border-left:5px solid var(--water);
+  border-radius:10px; padding:2.5vmin 3vmin;}
+.cost b{display:block; color:var(--void); font-size:clamp(19px,2.5vmin,27px); font-weight:700;}
+.cost span{color:var(--hai); font-size:clamp(18px,2.15vmin,24px); line-height:1.38;}
+.cost.open{border-left-color:var(--wind); border-style:dashed;}
+.cost.open span{color:var(--wind-ink);}
+.cost .when{color:var(--water); font-weight:800; font-size:clamp(14px,1.8vmin,18px); letter-spacing:.03em;}
+
+/* comparación IA analítica vs generativa */
+.compare{display:grid; grid-template-columns:1fr 1fr; gap:2.4vmin; margin-top:3vmin;}
+.compare .col{background:var(--kumo); border:1px solid var(--suna); border-radius:12px; padding:2.8vmin 3vmin; border-top:4px solid var(--water);}
+.compare .col.gen{border-top-color:var(--fire);}
+.compare .col h3{color:var(--void); font-size:clamp(19px,2.5vmin,26px); font-weight:800;}
+.compare .col .sub{display:block; color:var(--hai); font-size:clamp(14px,1.7vmin,18px); margin:.2vmin 0 1.4vmin;}
+.compare .col ul{list-style:none;}
+.compare .col li{color:var(--sumi); font-size:clamp(17px,2.05vmin,22px); line-height:1.48; margin-bottom:.3vmin;}
+.compare .col li b{color:var(--void); font-weight:700;}
+
+/* preguntas / capacidades / héroe */
+.threeq{display:flex; flex-direction:column; gap:2.4vmin; margin-top:3.4vmin;}
+.threeq .q{font-family:'Cormorant Garamond',Georgia,serif; font-weight:400;
+  font-size:clamp(26px,5vmin,58px); line-height:1.08; color:#fff; padding-left:5vmin; position:relative;}
+.threeq .q .qn{position:absolute; left:0; top:.05em; color:var(--sky); font-weight:500; font-size:.62em;}
+.hero{font-family:'Cormorant Garamond',Georgia,serif; font-weight:300; line-height:1;
+  font-size:clamp(52px,12vmin,140px); color:#fff; margin-top:2vmin;}
+.flow{display:flex; gap:2vmin; margin-top:4vmin; flex-wrap:wrap;}
+.flow .step{flex:1; min-width:150px; background:rgba(159,208,224,.12); border:1px solid rgba(159,208,224,.28);
+  border-radius:10px; padding:2.6vmin 2.2vmin; text-align:center;}
+.flow .step .sn{display:block; color:var(--sky); font-weight:800; font-size:clamp(15px,1.9vmin,19px); margin-bottom:.7vmin;}
+.flow .step b{color:#fff; font-size:clamp(19px,2.4vmin,26px); font-weight:700;}
+.flow .step span{display:block; color:#dbe2e7; font-size:clamp(17px,2vmin,22px); margin-top:.7vmin; line-height:1.34;}
+.flow.five{gap:1.5vmin; margin-top:3vmin;}
+.flow.five .step{min-width:118px; padding:2.2vmin 1.6vmin;}
+.flow.five .step b{font-size:clamp(17px,2.1vmin,23px);}
+.flow.five .step span{font-size:clamp(15px,1.85vmin,20px);}
+
+/* entrega */
+.deliv{background:var(--kumo); border:1px solid var(--suna); border-radius:13px; padding:3.2vmin 3.8vmin; margin-top:2vmin;}
+.deliv .top{display:flex; justify-content:space-between; align-items:baseline; gap:2vmin; flex-wrap:wrap;}
+.deliv .top b{color:var(--void); font-size:clamp(20px,3vmin,32px); font-weight:700;}
+.deliv .pct{color:var(--water); font-weight:800; font-size:clamp(22px,3.4vmin,38px);}
+ul.check{list-style:none; margin-top:1.6vmin;}
+ul.check li{position:relative; padding-left:3.4vmin; margin-bottom:1.4vmin;
+  font-size:clamp(18px,2.2vmin,25px); line-height:1.35; color:var(--sumi);}
+ul.check li::before{content:"\2610"; position:absolute; left:0; top:-.05em; color:var(--water); font-size:1.15em;}
+
+/* callout */
+.callout{background:var(--kumo); border:1px solid var(--suna); border-left:6px solid var(--water);
+  border-radius:11px; padding:2.8vmin 3.4vmin; margin-top:3vmin;}
+.callout .k{display:block; text-transform:uppercase; letter-spacing:.2em; font-size:clamp(13px,1.5vmin,15px);
+  color:var(--water-ink); font-weight:700; margin-bottom:1.2vmin;}
+.callout q{font-style:italic; color:var(--void); font-size:clamp(19px,3vmin,32px); line-height:1.3; quotes:"«" "»";}
+.callout .small{display:block; margin-top:1.2vmin; color:var(--hai); font-size:clamp(17px,2vmin,22px);}
+
+/* QR */
+.qrrow{display:flex; align-items:center; gap:3vmin; margin-top:3vmin; flex-wrap:wrap;}
+.qr{background:#fff; border-radius:12px; padding:1.4%; display:block;}
+.qrrow .qr{width:min(20vmin,160px);}
+.qrrow .qrtext b{display:block; color:#fff; font-size:clamp(19px,2.7vmin,28px); font-weight:700;}
+.qrrow .qrtext span{display:block; margin-top:.6vmin; color:#dbe2e7; font-size:clamp(16px,2.1vmin,22px); max-width:20em; line-height:1.4;}
+
+/* cierre two-up */
+.twoup{display:grid; grid-template-columns:1fr 1fr; gap:2.4vmin; margin-top:3.4vmin;}
+.twoup .box{background:rgba(159,208,224,.1); border:1px solid rgba(159,208,224,.26); border-radius:12px; padding:3vmin;}
+.twoup .box .k{color:var(--sky); text-transform:uppercase; letter-spacing:.2em; font-size:clamp(13px,1.5vmin,15px); font-weight:700;}
+.twoup .box b{display:block; color:#fff; font-size:clamp(20px,2.7vmin,30px); font-weight:700; margin:1.1vmin 0 .6vmin; line-height:1.15;}
+.twoup .box span{color:#dbe2e7; font-size:clamp(18px,2.1vmin,24px);}
+.twoup .box .qr{width:min(18vmin,140px); margin-top:1.8vmin;}
+
+/* pasos horizontales con flechas (slide taller) */
+.steparrows{display:flex; align-items:stretch; gap:1.4vmin; margin-top:2.6vmin; flex-wrap:wrap;}
+.steparrows .sbox{flex:1; min-width:180px; background:rgba(159,208,224,.12); border:1px solid rgba(159,208,224,.28);
+  border-radius:10px; padding:2.6vmin 2.2vmin; text-align:center; display:flex; flex-direction:column; gap:.6vmin; justify-content:center;}
+.steparrows .sbox .sn{color:var(--sky); font-weight:800; font-size:clamp(15px,1.9vmin,20px);}
+.steparrows .sbox b{color:#fff; font-size:clamp(18px,2.3vmin,25px); font-weight:700; line-height:1.18;}
+.steparrows .sbox span{color:#dbe2e7; font-size:clamp(16px,1.95vmin,21px); line-height:1.3;}
+.steparrows .arrow{display:flex; align-items:center; color:var(--sky); font-weight:700; font-size:clamp(26px,4vmin,44px);}
+.closing{margin-top:4vmin; font-family:'Cormorant Garamond',Georgia,serif; font-weight:300; font-style:italic;
+  font-size:clamp(22px,3.6vmin,40px); line-height:1.22; color:var(--sky);}
+
+/* ---------- HUD ---------- */
+.hud{position:fixed; left:0; right:0; bottom:0; z-index:40; display:flex; align-items:center;
+  gap:14px; padding:10px 18px; font-size:12px; color:#9aa7b5; pointer-events:none;}
+.hud .count{font-variant-numeric:tabular-nums; letter-spacing:.05em;}
+.progress{position:fixed; left:0; top:0; height:4px; background:var(--sky); width:0; z-index:41; transition:width .3s ease;}
+.hint{position:fixed; right:16px; bottom:12px; z-index:40; font-size:11px; color:#9aa7b5;
+  letter-spacing:.03em; opacity:.72;}
+.hint b{color:var(--sky); font-weight:700;}
+
+.nav{position:fixed; top:0; bottom:34px; width:22%; z-index:30; cursor:pointer; background:transparent;}
+.nav.prev{left:0;} .nav.next{right:0;}
+
+/* ---------- presenter notes ---------- */
+.notes{display:none;}
+body.shownotes .notes{
+  display:block; position:fixed; left:0; right:0; bottom:0; z-index:50;
+  max-height:38vh; overflow:auto;
+  background:var(--sumi); color:#e9e6df; padding:18px 24px 22px;
+  border-top:3px solid var(--water); font-size:15px; line-height:1.5;
+  box-shadow:0 -8px 30px rgba(0,0,0,.35);
+}
+body.shownotes .notes .nlabel{display:block; text-transform:uppercase; letter-spacing:.2em;
+  font-size:11px; color:var(--sky); font-weight:700; margin-bottom:8px;}
+body.shownotes .notes p{margin-bottom:8px; max-width:60em;}
+body.shownotes .notes b{color:#fff;}
+body.shownotes .notes:not(.active-note){display:none;}
+
+@media print{
+  @page{size:landscape; margin:14mm;}
+  body{background:#fff; color:var(--sumi); overflow:visible; height:auto;}
+  .deck{position:static;}
+  .hud,.progress,.hint,.nav{display:none !important;}
+  .slide{position:static; display:flex !important; min-height:auto; page-break-after:always;
+    background:var(--void) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    border-radius:10px; margin-bottom:8mm; padding:16mm;}
+  .notes{display:block !important; position:static; max-height:none; background:#f3f1ec; color:#2a2a2a;
+    border-top:none; border-left:4px solid var(--water); border-radius:0 8px 8px 0;
+    margin:4mm 0 10mm; padding:10px 16px; box-shadow:none; page-break-before:avoid;}
+  .notes .nlabel{color:var(--water-ink);}
+  .notes b{color:var(--sumi);}
+}
+
+@media(max-width:760px){
+  .cards,.compare{grid-template-columns:1fr 1fr;} .costs,.twoup{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 · Portada -->
+  <section class="slide dark cover">
+    <p class="eyebrow">Facultad de Ciencias Agronómicas · Universidad de Chile</p>
+    <h1 class="stitle serif">Inteligencia Artificial Responsable<br>para la Investigación</h1>
+    <p class="tagline">Haz de la IA una aliada de tu investigación,<br>con criterio y propósito.</p>
+    <div class="rule"></div>
+    <p class="meta"><b>Asa B. Stone, PhD</b> · Profesora visitante · Fulbright Scholar 2026–27</p>
+  </section>
+  <div class="notes" data-for="1">
+    <span class="nlabel">Nota · diapositiva 1</span>
+    <p><b>Portada del curso.</b> Presento el curso completo: cuatro sesiones para integrar la IA en la investigación en suelos y aguas, con criterio ético y metodológico. La curiosidad es el único requisito.</p>
+    <p>Posicionamiento: profesora visitante de la Facultad primero; Fulbright como descriptor secundario. Tono cálido; es el primer día.</p>
+  </div>
+
+  <!-- 2 · Me presento -->
+  <section class="slide dark">
+    <p class="eyebrow">Quién soy</p>
+    <h2 class="stitle serif">Me presento</h2>
+    <p class="lead" style="margin-top:2.4vmin;">Profesora visitante, Facultad de Ciencias Agronómicas, Universidad de Chile.</p>
+    <p class="subline">Fulbright Scholar 2026–27 · IA Responsable para el Bienestar Comunitario.</p>
+  </section>
+  <div class="notes" data-for="2">
+    <span class="nlabel">Nota · diapositiva 2</span>
+    <p><b>Me presento, en vivo.</b> Esta diapositiva es solo el marco; la biografía la cuento hablando. Cubrir: mi trayectoria (quién soy, de dónde vengo, qué me trajo hasta aquí), mi motivación para enseñar este curso, y mi apuesta por las capacidades humanas.</p>
+    <p>Tono honesto y cercano. Empezamos por conocernos: esto modela lo que pediré a cada estudiante.</p>
+  </div>
+
+  <!-- 3 · Bienvenida -->
+  <section class="slide dark">
+    <p class="eyebrow">El primer día</p>
+    <h2 class="stitle serif">Bienvenida</h2>
+    <p class="lead" style="max-width:36em;">Se aprende haciéndolo, a lo largo de cuatro sesiones. La curiosidad es el único requisito; no vas a usar IA para todo, sino a practicar cuándo sí, cuándo no, y cómo dejar claro tu razonamiento.</p>
+    <p class="kick">Desde hoy sostenemos tres acuerdos:</p>
+    <div class="flow" style="margin-top:2.4vmin;">
+      <div class="step"><b>Espacio relacional</b><span>Construimos vínculos que siguen después del curso.</span></div>
+      <div class="step"><b>Espacio seguro</b><span>Todas las preguntas caben. La confusión es parte de aprender.</span></div>
+      <div class="step"><b>Espacio creativo</b><span>Cada saber en la sala cuenta, incluido el tuyo.</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="3">
+    <span class="nlabel">Nota · diapositiva 3</span>
+    <p><b>Bienvenida y encuadre cálido.</b> Ya me presenté; ahora nombro cómo trabajaremos. Aprendemos haciendo y la curiosidad basta.</p>
+    <p>Los tres acuerdos (relacional, seguro, creativo) son los mismos del sitio y fijan el tono de las cuatro sesiones. Decir en voz alta que aquí todas las preguntas caben y todos los saberes cuentan.</p>
+  </div>
+
+  <!-- 4 · Liderazgo humano · 5 capacidades -->
+  <section class="slide dark">
+    <p class="eyebrow">La apuesta del curso</p>
+    <h2 class="stitle serif">Liderazgo humano</h2>
+    <p class="lead" style="max-width:40em;">La clave es el liderazgo humano: la persona lidera <em style="font-style:normal;font-weight:700;">y responde</em>, con la disposición de justificar cada decisión ante quienes se ven afectados. Las capacidades humanas se fortalecen con la práctica; por eso esta clase es <em style="font-style:normal;font-weight:700;">interactiva</em>.</p>
+    <p class="kick">Cinco capacidades que ejercitamos, emparejadas con el contenido de la IA responsable:</p>
+    <div class="flow five">
+      <div class="step"><b>Juicio crítico</b><span>Cuestionar, sopesar y decidir con criterio.</span></div>
+      <div class="step"><b>Pensamiento sistémico</b><span>Ver cómo se conectan las partes de un problema.</span></div>
+      <div class="step"><b>Comunicación efectiva</b><span>Explicar y argumentar con claridad.</span></div>
+      <div class="step"><b>Adaptabilidad</b><span>Aprender y ajustarse ante lo nuevo.</span></div>
+      <div class="step"><b>Liderazgo y colaboración</b><span>Guiar y construir con otras personas.</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="4">
+    <span class="nlabel">Nota · diapositiva 4</span>
+    <p><b>La apuesta pedagógica.</b> Nombro el liderazgo humano (la persona lidera y responde; la cláusula de rendición de cuentas va pegada, no suelta) y explico que la clase es interactiva: practicamos capacidades humanas junto al conocimiento de la IA responsable, no en su lugar. Marco de complementariedad, no de reserva humana.</p>
+    <p>Las cinco capacidades atraviesan las cuatro sesiones: se ejercitan en la discusión, el ritual de las tres preguntas, la escritura de la guía y la revisión entre pares. Cuido el lenguaje: la IA asiste; no piensa, decide ni reemplaza.</p>
+  </div>
+
+  <!-- 5 · Preséntate -->
+  <section class="slide dark">
+    <p class="eyebrow">Quiénes somos · nuestra primera tarea</p>
+    <h2 class="stitle serif">Preséntate</h2>
+    <p class="lead" style="margin-top:1.4vmin; max-width:38em;">Conversar y conocernos es la primera tarea de esta clase. Cuéntanos:</p>
+    <ul class="blist">
+      <li>Tu nombre, y cómo prefieres que te llamen.</li>
+      <li>Qué investigas, y en qué territorio o comunidad.</li>
+      <li>Cómo te llevas hoy con la IA.</li>
+      <li>Por qué tomas este curso.</li>
+      <li>Algo que hayas hecho con IA y quieras contarnos.</li>
+      <li>¿Qué me recomiendas para conocer mejor Santiago o Chile?</li>
+      <li>Hazle una pregunta a otra persona.</li>
+    </ul>
+  </section>
+  <div class="notes" data-for="5">
+    <span class="nlabel">Nota · diapositiva 5</span>
+    <p><b>Presentaciones del estudiantado: la primera tarea, no un trámite.</b> Conversar y conocernos es trabajo del curso, no relleno. Dar tiempo real; con el grupo chico, una ronda completa donde cada quien tenga su momento.</p>
+    <p>Cada punto tiene una razón: el territorio ancla la clase en el agua y los suelos (Magíster en Manejo de Suelos y Aguas); «cómo te llevas con la IA» hace visible el nivel de uso y normaliza la abstención; «algo que hiciste con IA» abre lo concreto y baja el miedo. La recomendación sobre Santiago o Chile invierte los roles y me deja aprender de ellos (reciprocidad); «hazle una pregunta a otra persona» convierte la ronda en conversación entre pares, no solo hacia mí. Anoto motivaciones y recelos: los retomo en los principios y los costos.</p>
+  </div>
+
+  <!-- 6 · La agenda de hoy -->
+  <section class="slide dark">
+    <p class="eyebrow">Sesión 1 de 4 · Hoy · 14:00–17:15 · Sala Depto. Ingesu</p>
+    <h2 class="stitle serif">La agenda de hoy</h2>
+    <div class="rev tight">
+      <div class="sec"><span class="id">14:00 · 30 min</span><b>Apertura: bienvenida, presentaciones y encuadre</b></div>
+      <div class="sec"><span class="id">14:30 · 60 min</span><b>Fundamentos: los seis principios y los cuatro costos</b></div>
+      <div class="sec"><span class="id">15:30 · 15 min</span><b>Pausa</b></div>
+      <div class="sec"><span class="id">15:45 · 75 min</span><b>Studio: co-creamos la §1 de la guía</b></div>
+      <div class="sec"><span class="id">17:00 · 15 min</span><b>Cierre: reflexión y qué viene</b></div>
+    </div>
+  </section>
+  <div class="notes" data-for="6">
+    <span class="nlabel">Nota · diapositiva 6</span>
+    <p><b>El mapa de la tarde.</b> Los cinco bloques con horas para que sepan la forma del día y confíen en que hay tiempo protegido para trabajar. Es el mismo ritmo de las cuatro sesiones. La clase cierra a las 17:15.</p>
+    <p>La pregunta de hoy es por qué la IA responsable. Si Fundamentos se alarga, recorto ejemplos de costos, nunca las tres preguntas ni el Studio.</p>
+  </div>
+
+  <!-- 7 · Qué vas a lograr -->
+  <section class="slide dark">
+    <p class="eyebrow">Qué vas a lograr</p>
+    <h2 class="stitle serif">Al terminar el curso</h2>
+    <div class="cards" style="margin-top:3.4vmin;">
+      <div class="card"><span class="n">A</span><b>Usar IA con responsabilidad</b><span>Comprender la IA responsable y ejercer el juicio humano.</span></div>
+      <div class="card"><span class="n">B</span><b>Pensar en sistemas</b><span>Integrar datos cualitativos y cuantitativos, y ver cómo interactúan lo ecológico, lo social y lo tecnológico.</span></div>
+      <div class="card"><span class="n">C</span><b>Situar tu ética</b><span>Reconocer los desafíos éticos de tu campo y articular dónde te paras.</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="7">
+    <span class="nlabel">Nota · diapositiva 7</span>
+    <p><b>Los resultados de aprendizaje, antes de mostrar el arco de sesiones.</b> Las tres competencias se cultivan en las cuatro sesiones; cada una se ancla y se evidencia en momentos distintos (A en S1 y S2, B en S2, C en S3 y S4).</p>
+    <p>Conectar con las cinco capacidades de la diapositiva 4: estos resultados son lo que esas capacidades hacen posible.</p>
+  </div>
+
+  <!-- 8 · El curso -->
+  <section class="slide dark">
+    <p class="eyebrow">El curso</p>
+    <h2 class="stitle serif">Cuatro sesiones, una pregunta por sesión</h2>
+    <div class="costs" style="margin-top:3vmin;">
+      <div class="cost"><span class="when">Sesión 1 · 18 ago · hoy</span><b>¿Por qué la IA responsable?</b><span>Exploramos los fundamentos.</span></div>
+      <div class="cost"><span class="when">Sesión 2 · 25 ago</span><b>¿Cómo investigamos con IA?</b><span>Investigamos con criterio.</span></div>
+      <div class="cost"><span class="when">Sesión 3 · 1 sep</span><b>¿Qué capacidades cultivamos?</b><span>Cultivamos capacidades humanas.</span></div>
+      <div class="cost"><span class="when">Sesión 4 · 8 sep</span><b>¿Hacia dónde vamos?</b><span>Proyectamos tu futuro.</span></div>
+    </div>
+    <p class="kick">Tres hilos que crecen contigo: la guía de campo colectiva, tu portafolio profesional y una práctica reflexiva.</p>
+  </section>
+  <div class="notes" data-for="8">
+    <span class="nlabel">Nota · diapositiva 8</span>
+    <p><b>El arco de cuatro, en tarjetas.</b> Cada sesión gira en torno a una pregunta y a un verbo (exploramos, investigamos, cultivamos, proyectamos). Los cuatro títulos están confirmados en el sitio.</p>
+    <p>Nombrar los tres hilos que atraviesan el curso: la guía de campo (lo colectivo), el portafolio (lo profesional) y la práctica reflexiva (lo personal).</p>
+  </div>
+
+  <!-- 9 · Las entregas -->
+  <section class="slide dark">
+    <p class="eyebrow">Las entregas</p>
+    <h2 class="stitle serif">Lo que construyes en el curso</h2>
+    <div class="costs" style="margin-top:3vmin;">
+      <div class="cost"><span class="when">Sesión 1 · 20%</span><b>Guía · Principios</b><span>Tu primer párrafo de la guía de campo colectiva.</span></div>
+      <div class="cost"><span class="when">Sesión 2 · 20%</span><b>Guía · Ejemplos</b><span>Un caso situado en tu investigación.</span></div>
+      <div class="cost"><span class="when">Sesión 3 · 20%</span><b>Portafolio en GitHub</b><span>Tu superficie profesional pública.</span></div>
+      <div class="cost"><span class="when">Sesión 4 · 30%</span><b>Presentación en vivo</b><span>Proyectas tu futuro con IA responsable.</span></div>
+    </div>
+    <p class="kick">La reflexión semanal por QR aporta el 10% restante. De cada entrega te muestro un ejemplo o modelo.</p>
+  </section>
+  <div class="notes" data-for="9">
+    <span class="nlabel">Nota · diapositiva 9</span>
+    <p><b>Todas las entregas, no solo la de hoy.</b> Cuatro entregas (20 + 20 + 20 + 30) más la reflexión semanal (10). Que vean el arco completo: hoy escriben el primer párrafo de la guía; el curso construye hacia el portafolio y la presentación final.</p>
+    <p>Mostrar un ejemplo o modelo de cada entrega (abrir el sitio del curso). Ver el modelo baja la ansiedad y fija el estándar de «Logrado».</p>
+  </div>
+
+  <!-- 10 · Cómo se evalúa -->
+  <section class="slide dark">
+    <p class="eyebrow">Cómo se evalúa</p>
+    <h2 class="stitle serif">El proceso, no solo el producto</h2>
+    <div class="rev tight" style="margin-top:3vmin;">
+      <div class="sec"><span class="id">Tu rol</span><b>Autor individual del trabajo, y revisor del de otra persona.</b></div>
+      <div class="sec"><span class="id">La mirada</span><b>Se evalúa cómo examinas, decides y declaras.</b></div>
+    </div>
+    <div class="cards" style="margin-top:2.2vmin;">
+      <div class="card lv-no"><span class="n">&lt; 4,0</span><b>Todavía no</b><span>Estás en una ruta de aprendizaje; te animo a volver a entregar.</span></div>
+      <div class="card lv-si"><span class="n">4,0 a 6,9</span><b>Logrado</b><span>Cumples el checklist de la entrega. La meta del curso.</span></div>
+      <div class="card lv-mas"><span class="n">7,0</span><b>Va más allá</b><span>Estiras el estándar. Sin observaciones.</span></div>
+    </div>
+    <p class="kick">Es un proceso iterativo: las reentregas son bienvenidas.</p>
+  </section>
+  <div class="notes" data-for="10">
+    <span class="nlabel">Nota · diapositiva 10</span>
+    <p><b>La filosofía de evaluación.</b> El proceso vale más que el desempeño: «Todavía no» es una etapa del camino, no un veredicto; en la mayoría de las entregas hay ventana para revisar y volver a entregar. Siempre con un comentario mío sobre qué fortalecer.</p>
+    <p>Insistir en la autoría individual nombrada: cada párrafo lleva un nombre. Cada quien es autor de uno y revisor de otro. Evitar «grupo» como sujeto de la escritura.</p>
+  </div>
+
+  <!-- 11 · Cómo usamos la IA aquí (mi ejemplo + QR del sitio) -->
+  <section class="slide dark">
+    <p class="eyebrow">La orientación del curso · empiezo por mí</p>
+    <h2 class="stitle serif" style="margin-bottom:1vmin;">Cómo usamos la IA aquí</h2>
+    <p class="lead" style="max-width:40em;">La persona lidera, la IA asiste. Mi ejemplo es este curso: examiné las herramientas que uso para construirlo, las uso con criterio, y lo declaro.</p>
+    <div class="flow" style="margin-top:2.8vmin;">
+      <div class="step"><span class="sn">1</span><b>Examínala</b><span>¿Qué hace? ¿Por qué usarla o no? Examiné las mías antes de empezar.</span></div>
+      <div class="step"><span class="sn">2</span><b>Úsala</b><span>Con criterio y conmigo al mando: redactar, diseñar, traducir.</span></div>
+      <div class="step"><span class="sn">3</span><b>Declárala</b><span>Dejo constancia. La mía está en el pie del sitio.</span></div>
+    </div>
+    <div class="qrrow" style="margin-top:2.6vmin; justify-content:center;">
+      <img class="qr" src="QR-Sitio.png" alt="Código QR del sitio del curso">
+      <div class="qrtext"><b>El sitio del curso</b><span>Aquí vive todo, y al pie está mi declaración de uso de IA. Escanéalo.</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="11">
+    <span class="nlabel">Nota · diapositiva 11</span>
+    <p><b>La regla que ordena el curso, con mi propio ejemplo en vivo.</b> Empiezo por mí: este curso se construyó con asistencia de IA, y modelo el ritual sobre esa práctica real (examinar, usar, declarar). Mostrar el sitio con el QR; al pie está la declaración completa. Mostrar, no solo decir: no pido nada que yo no haga.</p>
+    <p>Lenguaje de herramienta: yo lidero, la IA asiste; no piensa ni decide. Basta con decir que uso asistencia de IA, como dice la declaración del sitio; no hace falta exponer más detalle del que quiera. Este ritual lo practicamos de nuevo, a fondo, en el Studio.</p>
+  </div>
+
+  <!-- 12 · ¿Qué es la IA? (discusión) -->
+  <section class="slide dark">
+    <p class="eyebrow">Conversemos</p>
+    <h1 class="hero serif">¿Qué es la IA?</h1>
+    <p class="lead" style="margin-top:2.6vmin;">Una conversación abierta, para partir de lo que ya sabemos. No hay respuesta incorrecta.</p>
+  </section>
+  <div class="notes" data-for="12">
+    <span class="nlabel">Nota · diapositiva 12</span>
+    <p><b>La discusión que abre Fundamentos.</b> Una sola pregunta, amplia a propósito. Hago la pregunta y escucho; dejo silencio y anoto en la pizarra. Activar el conocimiento previo y hacer visible la diversidad de definiciones en la sala.</p>
+    <p>Puente hacia la siguiente diapositiva: de «qué es la IA en general» pasamos a la distinción clave de este curso, la IA generativa.</p>
+  </div>
+
+  <!-- 13 · IA analítica vs generativa -->
+  <section class="slide dark">
+    <p class="eyebrow">En este curso</p>
+    <h2 class="stitle serif">De la IA que ya usamos a la IA generativa</h2>
+    <div class="compare">
+      <div class="col">
+        <h3>IA que ya usamos</h3>
+        <span class="sub">Analítica y predictiva</span>
+        <ul>
+          <li><b>Navegación:</b> Google Maps predice rutas</li>
+          <li><b>Transporte:</b> Uber empareja viajes</li>
+          <li><b>Banca:</b> detección de fraude</li>
+          <li><b>Seguridad:</b> biometría</li>
+          <li><b>Productividad:</b> filtros de spam</li>
+          <li><b>Comercio:</b> precios dinámicos</li>
+          <li><b>Entretenimiento:</b> recomendaciones</li>
+        </ul>
+      </div>
+      <div class="col gen">
+        <h3>IA generativa</h3>
+        <span class="sub">Nuestro foco</span>
+        <ul>
+          <li><b>Texto:</b> LLM (modelo de lenguaje grande): ChatGPT, Google Gemini, Claude</li>
+          <li><b>Imágenes:</b> Midjourney, DALL·E, Canva</li>
+          <li><b>Audio:</b> Suno, Udio, Resemble AI</li>
+          <li><b>Video:</b> Runway, Adobe Firefly, Pika</li>
+        </ul>
+      </div>
+    </div>
+    <p class="kick">En esta clase nos enfocamos en usar la IA generativa de forma responsable.</p>
+  </section>
+  <div class="notes" data-for="13">
+    <span class="nlabel">Nota · diapositiva 13</span>
+    <p><b>Ubicar la IA generativa dentro de la IA en general.</b> La mayoría ya usa IA a diario (mapas, banca, recomendaciones): eso es IA analítica o predictiva. Lo nuevo es la IA generativa, que produce contenido: texto (modelos de lenguaje, LLM por su sigla en inglés), imágenes, audio y video.</p>
+    <p>El punto: este curso se enfoca en la generativa, porque es la que plantea las preguntas de responsabilidad más urgentes. Preguntar a la sala qué herramientas generativas ya han probado.</p>
+  </div>
+
+  <!-- 14 · ¿Qué es la IA responsable? (discusión) -->
+  <section class="slide dark">
+    <p class="eyebrow">Conversemos</p>
+    <h2 class="stitle serif">¿Qué es la IA responsable?</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:34em;">Dicho de otro modo: ¿cómo usamos la IA generativa de forma responsable? Lo conversamos antes de nombrar los principios.</p>
+    <div class="rev tight" style="margin-top:2.4vmin;">
+      <div class="sec"><span class="id">Para pensar</span><b>¿Reconocemos cuándo la IA no se usa de forma responsable?</b></div>
+      <div class="sec"><span class="id">Para pensar</span><b>¿Algún ejemplo que hayas visto o vivido?</b></div>
+    </div>
+  </section>
+  <div class="notes" data-for="14">
+    <span class="nlabel">Nota · diapositiva 14</span>
+    <p><b>La pregunta antes de la respuesta.</b> Abro la discusión: ¿qué haría responsable el uso de la IA generativa? Uso las dos preguntas guía para hacerlo concreto: reconocer el uso irresponsable suele ser más fácil que definir el responsable, y de ahí salen los principios.</p>
+    <p>Escucho y anoto ejemplos; los amarro a los seis principios que vienen enseguida. No corregir «respuestas»: recoger material.</p>
+  </div>
+
+  <!-- 15 · Seis principios -->
+  <section class="slide dark">
+    <p class="eyebrow">Una respuesta en seis principios</p>
+    <h2 class="stitle serif">La IA responsable</h2>
+    <div class="cards">
+      <div class="card"><span class="n">01</span><b>Transparencia</b><span>Se sabe cuándo y cómo interviene la IA.</span></div>
+      <div class="card"><span class="n">02</span><b>Explicabilidad</b><span>Se entiende cómo llegó a lo que produjo.</span></div>
+      <div class="card"><span class="n">03</span><b>Equidad</b><span>No reproduce ni amplifica el sesgo.</span></div>
+      <div class="card"><span class="n">04</span><b>Rendición de cuentas</b><span>La responsabilidad es de las personas, siempre.</span></div>
+      <div class="card"><span class="n">05</span><b>Accesibilidad</b><span>Sirve a la comunidad, no solo a quien la construye.</span></div>
+      <div class="card"><span class="n">06</span><b>Confiabilidad</b><span>Funciona de forma consistente y se puede comprobar.</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="15">
+    <span class="nlabel">Nota · diapositiva 15</span>
+    <p><b>Los seis juntos, como mapa.</b> Los nombro y luego dedico una diapositiva a cada uno. La §1 de la guía va a desarrollarlos. Amarrar cada uno a los ejemplos que salieron en la discusión anterior.</p>
+    <p>En cada principio uso un patrón: mi ejemplo, y luego invito el tuyo. Chile es parte del mundo, así que no separo «mundo» de «Chile»: pido ejemplos de donde sea que los hayan visto.</p>
+  </div>
+
+  <!-- 16 · Transparencia -->
+  <section class="slide dark">
+    <p class="eyebrow">Principio 1 de 6</p>
+    <h2 class="stitle serif">Transparencia</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:32em;"><b>Definición.</b> Se sabe cuándo y cómo interviene la IA. Sin esto, no hay forma de valorar lo demás.</p>
+    <div class="costs" style="margin-top:2.6vmin;">
+      <div class="cost"><b>Un ejemplo</b><span>Marcas de agua en las imágenes generadas por IA, y marcadores de procedencia en el texto (un desarrollo reciente, por ejemplo de Anthropic).</span></div>
+      <div class="cost open"><b>¿Y tú?</b><span>🔎 ¿Has visto algo sobre este tema? Cuéntanos tu ejemplo.</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="16">
+    <span class="nlabel">Nota · diapositiva 16</span>
+    <p><b>Transparencia = saber que la IA estuvo ahí.</b> Es la base de todo: si no se declara el uso, no se puede juzgar la equidad, la confiabilidad ni la rendición de cuentas. Conectar con la declaración de IA que pediré en cada entrega.</p>
+    <p><b>Verificar antes de afirmar el ejemplo de Anthropic.</b> Las marcas de agua en imágenes están bien documentadas; los marcadores de procedencia en el texto son un campo en desarrollo. Confirmar el detalle específico antes de darlo por hecho, o mantenerlo general.</p>
+  </div>
+
+  <!-- 17 · Explicabilidad -->
+  <section class="slide dark">
+    <p class="eyebrow">Principio 2 de 6</p>
+    <h2 class="stitle serif">Explicabilidad</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:34em;"><b>Definición.</b> Evitar la caja negra: explicar con claridad qué puede y qué no puede la herramienta, y cómo se llegó al resultado que obtuvimos.</p>
+    <div class="costs" style="margin-top:2.6vmin;">
+      <div class="cost"><b>Un ejemplo</b><span>Declarar las capacidades y los límites de la herramienta, y mostrar el camino hasta el resultado: fuentes, pasos, decisiones.</span></div>
+      <div class="cost open"><b>¿Y tú?</b><span>🔎 ¿Has visto una herramienta que no puedas explicar? Cuéntanos.</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="17">
+    <span class="nlabel">Nota · diapositiva 17</span>
+    <p><b>Explicabilidad = no una caja negra.</b> No basta con un resultado plausible: hay que poder decir qué hace la herramienta, dónde falla, y cómo se llegó a la salida. Incluye la verificabilidad: comprobar que lo producido existe.</p>
+    <p>Anclar en la agronomía: si no puedo explicar cómo un modelo estimó un dato de suelo o de rendimiento, no debería usarlo para decidir.</p>
+  </div>
+
+  <!-- 18 · Equidad -->
+  <section class="slide dark">
+    <p class="eyebrow">Principio 3 de 6</p>
+    <h2 class="stitle serif">Equidad</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:36em;"><b>Definición.</b> No reproduce ni amplifica el sesgo. En la práctica: cuidar que los datos sean diversos y representativos, hacer el flujo de trabajo transparente y responsable, y evaluar y validar para no perpetuar la inequidad.</p>
+    <div class="costs" style="margin-top:2.4vmin;">
+      <div class="cost"><b>Un ejemplo</b><span>La forma de interpretar los datos puede amplificar sesgos que ya existen.</span></div>
+      <div class="cost open"><b>¿Y tú?</b><span>🔎 ¿Qué realidad podría quedar mal representada en los datos? Cuéntanos.</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="18">
+    <span class="nlabel">Nota · diapositiva 18</span>
+    <p><b>Equidad = no reproducir ni amplificar el sesgo.</b> El sesgo entra por los datos y por cómo los interpretamos. Las tres prácticas (datos representativos, flujo transparente, evaluar y validar) son las palancas concretas.</p>
+    <p>Anclar en agricultura: datos que no representan a la pequeña agricultura, al secano o a territorios específicos. Vincular con las esperanzas y recelos de las presentaciones.</p>
+  </div>
+
+  <!-- 19 · Rendición de cuentas -->
+  <section class="slide dark">
+    <p class="eyebrow">Principio 4 de 6</p>
+    <h2 class="stitle serif">Rendición de cuentas</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:36em;"><b>Definición.</b> La IA no es humana: no puede tener ninguna responsabilidad. La responsabilidad de cada acción con IA es nuestra, con la disposición de justificar cada decisión ante quienes se ven afectados. Hoy más que nunca, nuestras acciones se observan: hay que poder justificarlas con criterio.</p>
+    <div class="costs" style="margin-top:2.4vmin;">
+      <div class="cost"><b>Un ejemplo</b><span>Firmar con mi nombre y poder justificar, punto por punto, una decisión apoyada en IA.</span></div>
+      <div class="cost open"><b>¿Y tú?</b><span>🔎 ¿Ante quién responderías tú por una decisión apoyada en IA?</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="19">
+    <span class="nlabel">Nota · diapositiva 19</span>
+    <p><b>La responsabilidad es humana, no de la herramienta.</b> La IA no decide ni rinde cuentas; responde quien la usa. Rendir cuentas es poder justificar la decisión ante quienes viven sus consecuencias: el agricultor, la comunidad, el estudiantado.</p>
+    <p>Subrayar el «hoy más que nunca»: el uso de IA está bajo la lupa en la academia y fuera de ella. Justificar críticamente cada decisión es lo que protege tu integridad.</p>
+  </div>
+
+  <!-- 20 · Accesibilidad -->
+  <section class="slide dark">
+    <p class="eyebrow">Principio 5 de 6</p>
+    <h2 class="stitle serif">Accesibilidad</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:32em;"><b>Definición.</b> Sirve a la comunidad, no solo a quien la construye. Preguntar siempre: ¿quién puede realmente usarla, y quién queda fuera?</p>
+    <div class="costs" style="margin-top:2.6vmin;">
+      <div class="cost"><b>Un ejemplo</b><span>El idioma y el medio dejan gente fuera: una herramienta solo en inglés, o disponible solo por un canal que no todas y todos tienen.</span></div>
+      <div class="cost open"><b>¿Y tú?</b><span>🔎 ¿Quién queda fuera por idioma, medio, costo o conexión?</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="20">
+    <span class="nlabel">Nota · diapositiva 20</span>
+    <p><b>Accesibilidad = servir a la comunidad.</b> Barreras: idioma, medio o formato, costo, conectividad, alfabetización digital. Anclar en territorio: la conectividad rural es desigual, y el idioma deja fuera saberes locales.</p>
+    <p>Invitar ejemplos concretos del estudiantado, sin cifras inventadas.</p>
+  </div>
+
+  <!-- 21 · Confiabilidad -->
+  <section class="slide dark">
+    <p class="eyebrow">Principio 6 de 6</p>
+    <h2 class="stitle serif">Confiabilidad</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:36em;"><b>Definición.</b> Funciona de forma consistente y se puede comprobar. En la práctica: verificar las citas, contrastar los datos, anclar el flujo en fuentes reales. Diseña antes de usar la IA, mantén a la persona al mando, y refina tu trabajo.</p>
+    <div class="costs" style="margin-top:2.4vmin;">
+      <div class="cost"><b>Un ejemplo</b><span>Contrastar cada dato y cada cita en su fuente original antes de darlos por buenos.</span></div>
+      <div class="cost open"><b>¿Y tú?</b><span>🔎 ¿Un caso donde no comprobar salió caro? Cuéntanos.</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="21">
+    <span class="nlabel">Nota · diapositiva 21</span>
+    <p><b>Confiabilidad = consistencia comprobable.</b> La misma consulta puede dar respuestas distintas. Confiable no es «suena bien», es «rinde de forma estable y lo puedo verificar».</p>
+    <p>El orden importa: diseñar el trabajo antes de recurrir a la IA, mantener a la persona al mando, y refinar. La herramienta no reemplaza el diseño ni el juicio.</p>
+  </div>
+
+  <!-- 22 · Los costos -->
+  <section class="slide dark">
+    <p class="eyebrow">¿A quién le cuesta?</p>
+    <h2 class="stitle serif" style="margin-bottom:1vmin;">Los costos</h2>
+    <p class="lead">Usar IA nunca es gratis. La pregunta no es solo qué hace, sino qué cuesta, y a quién. Cuatro lentes:</p>
+    <div class="costs" style="margin-top:2.6vmin;">
+      <div class="cost"><b>Ambiental</b><span>Agua y energía detrás de cada consulta: los mismos suelos y aguas que estudiamos.</span></div>
+      <div class="cost"><b>Social</b><span>Trabajo explotado, desinformación, poder e impactos humanos.</span></div>
+      <div class="cost"><b>Cognitivo</b><span>Lo que dejamos de ejercitar al delegar.</span></div>
+      <div class="cost"><b>Epistémico</b><span>Lo que dejamos de saber, y quién lo decide.</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="22">
+    <span class="nlabel">Nota · diapositiva 22</span>
+    <p><b>Aquí lo responsable se vuelve concreto.</b> Cuatro lentes: ambiental, social, cognitivo, epistémico. Los nombro juntos y luego dedico una diapositiva a cada uno.</p>
+    <p>Retomar los recelos de las presentaciones: muchos caen en alguna de estas cuatro categorías.</p>
+  </div>
+
+  <!-- 23 · Costo · Ambiental -->
+  <section class="slide dark">
+    <p class="eyebrow">Costo 1 de 4</p>
+    <h2 class="stitle serif">Ambiental</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:34em;"><b>Definición.</b> Los recursos reales detrás de cada consulta, y la injusticia ambiental de quién carga con el costo. La cuenta no aparece en la pantalla, pero existe.</p>
+    <div class="cards" style="margin-top:2.4vmin;">
+      <div class="card"><b>Agua</b><span>Refrigeración de los servidores en los centros de datos.</span></div>
+      <div class="card"><b>Energía</b><span>El consumo eléctrico de operar los centros de datos.</span></div>
+      <div class="card"><b>Materiales</b><span>Residuos electrónicos y extracción de recursos para el hardware.</span></div>
+    </div>
+    <p class="kick">🔎 ¿Qué has leído, visto, escuchado o entendido sobre este tema?</p>
+  </section>
+  <div class="notes" data-for="23">
+    <span class="nlabel">Nota · diapositiva 23</span>
+    <p><b>Costo ambiental: agua, energía y materiales, con injusticia ambiental.</b> El más cercano al territorio de la Facultad: la misma agua que estudiamos. El costo no es neutral, recae más sobre unas comunidades que sobre otras.</p>
+    <p>Sin cifras inventadas: que los centros de datos consumen agua de refrigeración y energía, y que el hardware genera residuos electrónicos y extracción de recursos, son hechos generales y bien documentados. Si surge, anclar en el debate local sobre centros de datos en Chile.</p>
+  </div>
+
+  <!-- 24 · Costo · Social -->
+  <section class="slide dark">
+    <p class="eyebrow">Costo 2 de 4</p>
+    <h2 class="stitle serif">Social</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:30em;"><b>Definición.</b> El costo humano detrás de los modelos, pocas veces visible.</p>
+    <div class="cards" style="margin-top:2.4vmin;">
+      <div class="card"><b>Trabajo explotado</b><span>Personas que etiquetan y moderan datos para entrenar los modelos, muchas veces en malas condiciones.</span></div>
+      <div class="card"><b>Des/misinformación</b><span>Contenido falso o engañoso producido a escala.</span></div>
+      <div class="card"><b>Bienestar</b><span>Seguridad laboral, bienestar emocional y conexión social.</span></div>
+    </div>
+    <p class="kick">🔎 ¿Qué has leído, visto, escuchado o entendido sobre este tema?</p>
+  </section>
+  <div class="notes" data-for="24">
+    <span class="nlabel">Nota · diapositiva 24</span>
+    <p><b>Costo social.</b> Tres caras: el trabajo humano explotado de etiquetado y moderación (real y poco reconocido), la desinformación y la mala información a escala, y el bienestar (seguridad laboral, bienestar emocional y conexión social).</p>
+    <p>Mantener general, sin nombres de empresas ni cifras inventadas. Invitar ejemplos del estudiantado.</p>
+  </div>
+
+  <!-- 25 · Costo · Cognitivo -->
+  <section class="slide dark">
+    <p class="eyebrow">Costo 3 de 4</p>
+    <h2 class="stitle serif">Cognitivo</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:30em;"><b>Definición.</b> Lo que dejamos de ejercitar cuando delegamos sin criterio.</p>
+    <div class="cards" style="margin-top:2.4vmin;">
+      <div class="card"><b>Descarga cognitiva</b><span>Delegar el pensamiento a una herramienta externa (cognitive offloading).</span></div>
+      <div class="card"><b>Atrofia de habilidades</b><span>Las capacidades se debilitan cuando dejan de usarse.</span></div>
+      <div class="card"><b>Deuda cognitiva</b><span>El costo que se acumula cuando dejamos de hacer el trabajo mental.</span></div>
+    </div>
+    <p class="kick">🔎 ¿Qué has leído, visto, escuchado o entendido sobre este tema?</p>
+  </section>
+  <div class="notes" data-for="25">
+    <span class="nlabel">Nota · diapositiva 25</span>
+    <p><b>Costo cognitivo.</b> No es «la IA nos hace tontos»: es que las capacidades se mantienen con la práctica. Definir cada término: descarga cognitiva (delegar el pensar), atrofia de habilidades (se pierden por desuso), deuda cognitiva (el costo acumulado de no hacer el trabajo mental).</p>
+    <p>Conectar con las cinco capacidades de la diapositiva 4 y con el liderazgo humano: decidir qué delegar y qué seguir ejercitando.</p>
+  </div>
+
+  <!-- 26 · Costo · Epistémico -->
+  <section class="slide dark">
+    <p class="eyebrow">Costo 4 de 4</p>
+    <h2 class="stitle serif">Epistémico</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:30em;"><b>Definición.</b> Lo que dejamos de saber, y quién lo decide.</p>
+    <div class="cards" style="margin-top:2.4vmin;">
+      <div class="card"><b>Falsa sensación de saber</b><span>Confianza y sensación de conocimiento sin el conocimiento real.</span></div>
+      <div class="card"><b>Robo y extracción</b><span>Apropiación de sistemas de conocimiento: saberes locales y comunitarios.</span></div>
+      <div class="card"><b>Homogeneización</b><span>La información se uniforma; se pierde la diversidad de fuentes y voces.</span></div>
+    </div>
+    <p class="kick">🔎 ¿Qué has leído, visto, escuchado o entendido sobre este tema?</p>
+  </section>
+  <div class="notes" data-for="26">
+    <span class="nlabel">Nota · diapositiva 26</span>
+    <p><b>Costo epistémico.</b> El más sutil: la herramienta filtra qué conocimiento llega y cuál queda fuera. Definir cada cara: la falsa sensación de saber (sentirse informado sin estarlo), el robo y la extracción de sistemas de conocimiento, y la homogeneización de la información.</p>
+    <p>Anclar en territorio: los saberes locales y campesinos suelen estar ausentes de los datos de entrenamiento. Donde la red no llega, la IA no puede estimar.</p>
+  </div>
+
+  <!-- 27 · Q&A → Pausa -->
+  <section class="slide dark">
+    <p class="eyebrow">Respiramos</p>
+    <h2 class="stitle serif">Preguntas, y una pausa</h2>
+    <p class="lead">Antes del descanso: ¿qué preguntas, dudas o desacuerdos quedaron dando vueltas?</p>
+    <div class="twoup" style="margin-top:3.4vmin;">
+      <div class="box"><span class="k">Ahora</span><b>Preguntas y respuestas</b><span>Unos minutos para lo que quedó abierto.</span></div>
+      <div class="box"><span class="k">Y luego</span><b>Pausa · 15 minutos</b><span>Volvemos al taller: co-creamos la §1 de la guía.</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="27">
+    <span class="nlabel">Nota · diapositiva 27</span>
+    <p><b>Cierre de la primera mitad y transición.</b> Un Q&A breve: recoger dudas y desacuerdos, no solo preguntas de aclaración. Luego 15 minutos de pausa.</p>
+    <p>Después de la pausa cambiamos de modo: de la conversación al taller práctico. Anticiparlo.</p>
+  </div>
+
+  <!-- 28 · Al taller -->
+  <section class="slide dark">
+    <p class="eyebrow">De vuelta de la pausa · al taller</p>
+    <h2 class="stitle serif">Co-creamos la §1 de la guía</h2>
+    <p class="lead" style="max-width:38em;">Estamos en el Studio: nos quedan unos 75 minutos, hasta el cierre a las 17:15.</p>
+    <div class="qrrow">
+      <img class="qr" src="QR-Guía.png" alt="Código QR para abrir la guía de campo">
+      <div class="qrtext"><b>Abre la guía de campo</b><span>Escanea el código y solicita acceso al documento para poder escribir tu párrafo.</span></div>
+    </div>
+    <div class="steparrows">
+      <div class="sbox"><span class="sn">Paso 1</span><b>Decidimos la herramienta</b><span>o ninguna</span></div>
+      <div class="arrow">→</div>
+      <div class="sbox"><span class="sn">Paso 2</span><b>Cada quien elige</b><span>un principio y un costo</span></div>
+      <div class="arrow">→</div>
+      <div class="sbox"><span class="sn">Paso 3</span><b>Autor y revisor</b><span>la tarea de la semana</span></div>
+    </div>
+  </section>
+  <div class="notes" data-for="28">
+    <span class="nlabel">Nota · diapositiva 28</span>
+    <p><b>Arranca la parte práctica.</b> Que escaneen el QR y soliciten acceso al documento colectivo antes de empezar a escribir; verificar que todas y todos entraron. La §1 cubre lo que vimos: seis principios y cuatro costos, diez párrafos posibles.</p>
+    <p>Recorrer los tres pasos: primero decidimos la herramienta juntas (siguiente diapositiva), luego el reparto de párrafos, luego el modelo autor y revisor. Mantener «autor individual», nunca «grupo».</p>
+  </div>
+
+  <!-- 29 · Las tres preguntas -->
+  <section class="slide dark">
+    <p class="eyebrow">El juicio situado y el criterio colectivo</p>
+    <h2 class="stitle serif" style="margin-bottom:1vmin;">Las tres preguntas</h2>
+    <div class="threeq">
+      <div class="q"><span class="qn">1.</span>¿Qué hace?</div>
+      <div class="q"><span class="qn">2.</span>¿Por qué usarla o no?</div>
+      <div class="q"><span class="qn">3.</span>¿Cómo la uso con cuidado?</div>
+    </div>
+    <div class="flow">
+      <div class="step"><span class="sn">1</span><b>Examinar</b></div>
+      <div class="step"><span class="sn">2</span><b>Decidir</b></div>
+      <div class="step"><span class="sn">3</span><b>Declarar</b></div>
+    </div>
+  </section>
+  <div class="notes" data-for="29">
+    <span class="nlabel">Nota · diapositiva 29</span>
+    <p><b>El ritual que aplicamos todo el curso.</b> Examinar (¿qué hace la herramienta?), decidir (¿por qué usarla o no?, aquí vive el costo y a quién le cuesta), declarar (dejar constancia de la decisión).</p>
+    <p>Cada uso de IA termina en una declaración: esa es la disciplina que hace visible el liderazgo humano. Lo aplicamos en vivo enseguida.</p>
+  </div>
+
+  <!-- 30 · ¿Qué herramienta usamos? -->
+  <section class="slide dark">
+    <p class="eyebrow">Practiquemos el ritual</p>
+    <h2 class="stitle serif">¿Usamos esta herramienta,<br>o ninguna?</h2>
+    <p class="lead" style="max-width:34em;">Corremos las tres preguntas, en vivo, sobre <em style="font-style:normal;font-weight:700;">Gemini Pro Deep Research</em>, y decidimos juntas: usarla con criterio, o escribir sin ninguna herramienta.</p>
+    <div class="callout">
+      <span class="k">La decisión es el ejercicio</span>
+      <q>Cualquiera de las dos respuestas es válida si el criterio está a la vista.</q>
+      <span class="small">Al terminar, la declaración: qué herramienta (o ninguna), qué acepté, qué modifiqué, qué rechacé, y por qué.</span>
+    </div>
+  </section>
+  <div class="notes" data-for="30">
+    <span class="nlabel">Nota · diapositiva 30</span>
+    <p><b>Aplicar el ritual en vivo a Gemini Pro Deep Research.</b> Modelar cada pregunta con la clase. Lo importante es que el acto de decidir es el ejercicio, no la herramienta: usarla con juicio o no usar ninguna, ambas son correctas si el criterio se hace explícito.</p>
+    <p>Si la usamos: modelar la declaración en tiempo real (qué acepto, qué modifico, qué rechazo). Si no: escribir sin herramienta y declarar esa decisión. La IA busca, sintetiza, genera; no piensa ni decide.</p>
+  </div>
+
+  <!-- 31 · Elige un principio y un costo -->
+  <section class="slide dark">
+    <p class="eyebrow">Manos a la obra · la tarea</p>
+    <h2 class="stitle serif">Elige un principio y un costo</h2>
+    <p class="lead" style="max-width:38em;">Escribes un párrafo breve por sección: <b>uno de los seis principios</b> y <b>uno de los cuatro costos</b>. El traslape está bien; lo sintetizamos después. Elige por interés, o por lo que esté disponible.</p>
+    <div class="deliv">
+      <div class="top"><b>Tu compromiso para la Sesión 2</b><span class="pct">§1</span></div>
+      <ul class="check">
+        <li>Escribes <b>dos párrafos breves</b> (un principio, un costo), con tu nombre.</li>
+        <li>Revisas <b>el párrafo de otra persona</b> con comentarios concretos.</li>
+        <li>Incluyes tu declaración de IA al pie: herramienta (o ninguna) y qué decidiste.</li>
+        <li>Llegas con una <b>noticia, un evento o una acción sobre IA</b> de tu vida para compartir.</li>
+      </ul>
+    </div>
+    <p class="kick">Antes de irnos lo decidimos juntas: ¿prefieres traer tu laptop y trabajar aquí, o una alternativa?</p>
+  </section>
+  <div class="notes" data-for="31">
+    <span class="nlabel">Nota · diapositiva 31</span>
+    <p><b>La tarea, clara.</b> Cada quien escribe dos párrafos breves: uno sobre un principio (de los seis) y uno sobre un costo (de los cuatro). El traslape entre estudiantes está bien; sintetizamos las versiones después. Que elijan por interés o por disponibilidad.</p>
+    <p>Insistir en la autoría nombrada y la declaración de IA al pie. Cerrar con la decisión logística: preguntar si prefieren traer su laptop y trabajar en la sala, o una alternativa; acordarlo con el grupo antes de irnos.</p>
+  </div>
+
+  <!-- 32 · Cierre -->
+  <section class="slide dark">
+    <p class="eyebrow">Antes de irnos</p>
+    <h2 class="stitle serif">El cierre</h2>
+    <div class="twoup">
+      <div class="box"><span class="k">Ahora, en clase</span><b>Reflexión semanal</b><span>Escanea el código y comparte tu reflexión de la semana.</span>
+        <img class="qr" src="QR-Reflexión.png" alt="Código QR para la encuesta de reflexión"></div>
+      <div class="box"><span class="k">Qué viene</span><b>Sesión 2 · ¿Cómo investigamos con IA?</b><span>Martes 25 de agosto.</span></div>
+    </div>
+    <p class="closing">Hoy no aprendimos a usar la IA. Aprendimos a decidir cuándo, cómo y por qué.</p>
+    <p style="margin-top:3vmin; font-size:clamp(13px,1.6vmin,17px); color:#b7c2cb; line-height:1.45;"><b style="color:#dbe2e7;">Declaración:</b> esta presentación se produjo con asistencia de IA (Claude Code). El contenido, las decisiones de diseño y la responsabilidad final son de Asa B. Stone.</p>
+  </section>
+  <div class="notes" data-for="32">
+    <span class="nlabel">Nota · diapositiva 32</span>
+    <p><b>Cierre.</b> La reflexión semanal por QR se hace ahora, en clase: proyectar el código y dar dos minutos. Adelantar la S2 en una frase.</p>
+    <p>Cerrar con la línea de fondo: el curso no es sobre la herramienta, es sobre el criterio. La declaración de uso de IA al pie cierra el ciclo y modela la transparencia que enseñamos.</p>
+  </div>
+
+</div>
+
+<div class="nav prev" id="prev" aria-label="Anterior"></div>
+<div class="nav next" id="next" aria-label="Siguiente"></div>
+
+<div class="hud"><span class="count" id="count">1 / 32</span></div>
+<div class="hint">← → avanzar · <b>N</b> notas · <b>F</b> pantalla completa</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var notes  = Array.prototype.slice.call(document.querySelectorAll('.notes'));
+  var total  = slides.length;
+  var i = 0;
+  var progress = document.getElementById('progress');
+  var count = document.getElementById('count');
+
+  function render(){
+    slides.forEach(function(s,n){ s.classList.toggle('active', n===i); });
+    notes.forEach(function(nt){ nt.classList.toggle('active-note', nt.getAttribute('data-for')==String(i+1)); });
+    progress.style.width = ((i+1)/total*100) + '%';
+    count.textContent = (i+1) + ' / ' + total;
+    if(location.hash !== '#'+(i+1)) history.replaceState(null,'','#'+(i+1));
+  }
+  function go(n){ i = Math.max(0, Math.min(total-1, n)); render(); }
+  function next(){ go(i+1); }
+  function prev(){ go(i-1); }
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+
+  document.addEventListener('keydown', function(e){
+    switch(e.key){
+      case 'ArrowRight': case ' ': case 'PageDown': next(); e.preventDefault(); break;
+      case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+      case 'Home': go(0); break;
+      case 'End': go(total-1); break;
+      case 'n': case 'N': document.body.classList.toggle('shownotes'); break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement){ document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen(); }
+        else { document.exitFullscreen&&document.exitFullscreen(); }
+        break;
+    }
+  });
+
+  var start = parseInt((location.hash||'').replace('#',''),10);
+  if(start>=1 && start<=total) i = start-1;
+  render();
+})();
+</script>
+</body>
+</html>
