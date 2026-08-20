@@ -181,20 +181,6 @@ ul.check li::before{content:"\2610"; position:absolute; left:0; top:-.05em; colo
 .nav{position:fixed; top:0; bottom:34px; width:22%; z-index:30; cursor:pointer; background:transparent;}
 .nav.prev{left:0;} .nav.next{right:0;}
 
-/* ---------- presenter notes ---------- */
-.notes{display:none;}
-body.shownotes .notes{
-  display:block; position:fixed; left:0; right:0; bottom:0; z-index:50;
-  max-height:38vh; overflow:auto;
-  background:var(--sumi); color:#e9e6df; padding:18px 24px 22px;
-  border-top:3px solid var(--water); font-size:15px; line-height:1.5;
-  box-shadow:0 -8px 30px rgba(0,0,0,.35);
-}
-body.shownotes .notes .nlabel{display:block; text-transform:uppercase; letter-spacing:.2em;
-  font-size:11px; color:var(--sky); font-weight:700; margin-bottom:8px;}
-body.shownotes .notes p{margin-bottom:8px; max-width:60em;}
-body.shownotes .notes b{color:#fff;}
-body.shownotes .notes:not(.active-note){display:none;}
 
 @media print{
   @page{size:landscape; margin:14mm;}
@@ -204,11 +190,6 @@ body.shownotes .notes:not(.active-note){display:none;}
   .slide{position:static; display:flex !important; min-height:auto; page-break-after:always;
     background:var(--void) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;
     border-radius:10px; margin-bottom:8mm; padding:16mm;}
-  .notes{display:block !important; position:static; max-height:none; background:#f3f1ec; color:#2a2a2a;
-    border-top:none; border-left:4px solid var(--water); border-radius:0 8px 8px 0;
-    margin:4mm 0 10mm; padding:10px 16px; box-shadow:none; page-break-before:avoid;}
-  .notes .nlabel{color:var(--water-ink);}
-  .notes b{color:var(--sumi);}
 }
 
 @media(max-width:760px){
@@ -229,11 +210,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     <div class="rule"></div>
     <p class="meta"><b>Asa B. Stone, PhD</b> · Profesora visitante · Fulbright Scholar 2026–27</p>
   </section>
-  <div class="notes" data-for="1">
-    <span class="nlabel">Nota · diapositiva 1</span>
-    <p><b>Portada del curso.</b> Presento el curso completo: cuatro sesiones para integrar la IA en la investigación en suelos y aguas, con criterio ético y metodológico. La curiosidad es el único requisito.</p>
-    <p>Posicionamiento: profesora visitante de la Facultad primero; Fulbright como descriptor secundario. Tono cálido; es el primer día.</p>
-  </div>
 
   <!-- 2 · Me presento -->
   <section class="slide dark">
@@ -242,11 +218,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     <p class="lead" style="margin-top:2.4vmin;">Profesora visitante, Facultad de Ciencias Agronómicas, Universidad de Chile.</p>
     <p class="subline">Fulbright Scholar 2026–27 · IA Responsable para el Bienestar Comunitario.</p>
   </section>
-  <div class="notes" data-for="2">
-    <span class="nlabel">Nota · diapositiva 2</span>
-    <p><b>Me presento, en vivo.</b> Esta diapositiva es solo el marco; la biografía la cuento hablando. Cubrir: mi trayectoria (quién soy, de dónde vengo, qué me trajo hasta aquí), mi motivación para enseñar este curso, y mi apuesta por las capacidades humanas.</p>
-    <p>Tono honesto y cercano. Empezamos por conocernos: esto modela lo que pediré a cada estudiante.</p>
-  </div>
 
   <!-- 3 · Bienvenida -->
   <section class="slide dark">
@@ -260,11 +231,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="step"><b>Espacio creativo</b><span>Cada saber en la sala cuenta, incluido el tuyo.</span></div>
     </div>
   </section>
-  <div class="notes" data-for="3">
-    <span class="nlabel">Nota · diapositiva 3</span>
-    <p><b>Bienvenida y encuadre cálido.</b> Ya me presenté; ahora nombro cómo trabajaremos. Aprendemos haciendo y la curiosidad basta.</p>
-    <p>Los tres acuerdos (relacional, seguro, creativo) son los mismos del sitio y fijan el tono de las cuatro sesiones. Decir en voz alta que aquí todas las preguntas caben y todos los saberes cuentan.</p>
-  </div>
 
   <!-- 4 · Liderazgo humano · 5 capacidades -->
   <section class="slide dark">
@@ -280,11 +246,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="step"><b>Liderazgo y colaboración</b><span>Guiar y construir con otras personas.</span></div>
     </div>
   </section>
-  <div class="notes" data-for="4">
-    <span class="nlabel">Nota · diapositiva 4</span>
-    <p><b>La apuesta pedagógica.</b> Nombro el liderazgo humano (la persona lidera y responde; la cláusula de rendición de cuentas va pegada, no suelta) y explico que la clase es interactiva: practicamos capacidades humanas junto al conocimiento de la IA responsable, no en su lugar. Marco de complementariedad, no de reserva humana.</p>
-    <p>Las cinco capacidades atraviesan las cuatro sesiones: se ejercitan en la discusión, el ritual de las tres preguntas, la escritura de la guía y la revisión entre pares. Cuido el lenguaje: la IA asiste; no piensa, decide ni reemplaza.</p>
-  </div>
 
   <!-- 5 · Preséntate -->
   <section class="slide dark">
@@ -301,11 +262,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <li>Hazle una pregunta a otra persona.</li>
     </ul>
   </section>
-  <div class="notes" data-for="5">
-    <span class="nlabel">Nota · diapositiva 5</span>
-    <p><b>Presentaciones del estudiantado: la primera tarea, no un trámite.</b> Conversar y conocernos es trabajo del curso, no relleno. Dar tiempo real; con el grupo chico, una ronda completa donde cada quien tenga su momento.</p>
-    <p>Cada punto tiene una razón: el territorio ancla la clase en el agua y los suelos (Magíster en Manejo de Suelos y Aguas); «cómo te llevas con la IA» hace visible el nivel de uso y normaliza la abstención; «algo que hiciste con IA» abre lo concreto y baja el miedo. La recomendación sobre Santiago o Chile invierte los roles y me deja aprender de ellos (reciprocidad); «hazle una pregunta a otra persona» convierte la ronda en conversación entre pares, no solo hacia mí. Anoto motivaciones y recelos: los retomo en los principios y los costos.</p>
-  </div>
 
   <!-- 6 · La agenda de hoy -->
   <section class="slide dark">
@@ -319,11 +275,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="sec"><span class="id">17:00 · 15 min</span><b>Cierre: reflexión y qué viene</b></div>
     </div>
   </section>
-  <div class="notes" data-for="6">
-    <span class="nlabel">Nota · diapositiva 6</span>
-    <p><b>El mapa de la tarde.</b> Los cinco bloques con horas para que sepan la forma del día y confíen en que hay tiempo protegido para trabajar. Es el mismo ritmo de las cuatro sesiones. La clase cierra a las 17:15.</p>
-    <p>La pregunta de hoy es por qué la IA responsable. Si Fundamentos se alarga, recorto ejemplos de costos, nunca las tres preguntas ni el Studio.</p>
-  </div>
 
   <!-- 7 · Qué vas a lograr -->
   <section class="slide dark">
@@ -335,11 +286,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="card"><span class="n">C</span><b>Situar tu ética</b><span>Reconocer los desafíos éticos de tu campo y articular dónde te paras.</span></div>
     </div>
   </section>
-  <div class="notes" data-for="7">
-    <span class="nlabel">Nota · diapositiva 7</span>
-    <p><b>Los resultados de aprendizaje, antes de mostrar el arco de sesiones.</b> Las tres competencias se cultivan en las cuatro sesiones; cada una se ancla y se evidencia en momentos distintos (A en S1 y S2, B en S2, C en S3 y S4).</p>
-    <p>Conectar con las cinco capacidades de la diapositiva 4: estos resultados son lo que esas capacidades hacen posible.</p>
-  </div>
 
   <!-- 8 · El curso -->
   <section class="slide dark">
@@ -353,11 +299,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     </div>
     <p class="kick">Tres hilos que crecen contigo: la guía de campo colectiva, tu portafolio profesional y una práctica reflexiva.</p>
   </section>
-  <div class="notes" data-for="8">
-    <span class="nlabel">Nota · diapositiva 8</span>
-    <p><b>El arco de cuatro, en tarjetas.</b> Cada sesión gira en torno a una pregunta y a un verbo (exploramos, investigamos, cultivamos, proyectamos). Los cuatro títulos están confirmados en el sitio.</p>
-    <p>Nombrar los tres hilos que atraviesan el curso: la guía de campo (lo colectivo), el portafolio (lo profesional) y la práctica reflexiva (lo personal).</p>
-  </div>
 
   <!-- 9 · Las entregas -->
   <section class="slide dark">
@@ -371,11 +312,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     </div>
     <p class="kick">La reflexión semanal por QR aporta el 10% restante. De cada entrega te muestro un ejemplo o modelo.</p>
   </section>
-  <div class="notes" data-for="9">
-    <span class="nlabel">Nota · diapositiva 9</span>
-    <p><b>Todas las entregas, no solo la de hoy.</b> Cuatro entregas (20 + 20 + 20 + 30) más la reflexión semanal (10). Que vean el arco completo: hoy escriben el primer párrafo de la guía; el curso construye hacia el portafolio y la presentación final.</p>
-    <p>Mostrar un ejemplo o modelo de cada entrega (abrir el sitio del curso). Ver el modelo baja la ansiedad y fija el estándar de «Logrado».</p>
-  </div>
 
   <!-- 10 · Cómo se evalúa -->
   <section class="slide dark">
@@ -392,11 +328,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     </div>
     <p class="kick">Es un proceso iterativo: las reentregas son bienvenidas.</p>
   </section>
-  <div class="notes" data-for="10">
-    <span class="nlabel">Nota · diapositiva 10</span>
-    <p><b>La filosofía de evaluación.</b> El proceso vale más que el desempeño: «Todavía no» es una etapa del camino, no un veredicto; en la mayoría de las entregas hay ventana para revisar y volver a entregar. Siempre con un comentario mío sobre qué fortalecer.</p>
-    <p>Insistir en la autoría individual nombrada: cada párrafo lleva un nombre. Cada quien es autor de uno y revisor de otro. Evitar «grupo» como sujeto de la escritura.</p>
-  </div>
 
   <!-- 11 · Cómo usamos la IA aquí (mi ejemplo + QR del sitio) -->
   <section class="slide dark">
@@ -413,11 +344,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="qrtext"><b>El sitio del curso</b><span>Aquí vive todo, y al pie está mi declaración de uso de IA. Escanéalo.</span></div>
     </div>
   </section>
-  <div class="notes" data-for="11">
-    <span class="nlabel">Nota · diapositiva 11</span>
-    <p><b>La regla que ordena el curso, con mi propio ejemplo en vivo.</b> Empiezo por mí: este curso se construyó con asistencia de IA, y modelo el ritual sobre esa práctica real (examinar, usar, declarar). Mostrar el sitio con el QR; al pie está la declaración completa. Mostrar, no solo decir: no pido nada que yo no haga.</p>
-    <p>Lenguaje de herramienta: yo lidero, la IA asiste; no piensa ni decide. Basta con decir que uso asistencia de IA, como dice la declaración del sitio; no hace falta exponer más detalle del que quiera. Este ritual lo practicamos de nuevo, a fondo, en el Studio.</p>
-  </div>
 
   <!-- 12 · ¿Qué es la IA? (discusión) -->
   <section class="slide dark">
@@ -425,11 +351,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     <h1 class="hero serif">¿Qué es la IA?</h1>
     <p class="lead" style="margin-top:2.6vmin;">Una conversación abierta, para partir de lo que ya sabemos. No hay respuesta incorrecta.</p>
   </section>
-  <div class="notes" data-for="12">
-    <span class="nlabel">Nota · diapositiva 12</span>
-    <p><b>La discusión que abre Fundamentos.</b> Una sola pregunta, amplia a propósito. Hago la pregunta y escucho; dejo silencio y anoto en la pizarra. Activar el conocimiento previo y hacer visible la diversidad de definiciones en la sala.</p>
-    <p>Puente hacia la siguiente diapositiva: de «qué es la IA en general» pasamos a la distinción clave de este curso, la IA generativa.</p>
-  </div>
 
   <!-- 13 · IA analítica vs generativa -->
   <section class="slide dark">
@@ -462,11 +383,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     </div>
     <p class="kick">En esta clase nos enfocamos en usar la IA generativa de forma responsable.</p>
   </section>
-  <div class="notes" data-for="13">
-    <span class="nlabel">Nota · diapositiva 13</span>
-    <p><b>Ubicar la IA generativa dentro de la IA en general.</b> La mayoría ya usa IA a diario (mapas, banca, recomendaciones): eso es IA analítica o predictiva. Lo nuevo es la IA generativa, que produce contenido: texto (modelos de lenguaje, LLM por su sigla en inglés), imágenes, audio y video.</p>
-    <p>El punto: este curso se enfoca en la generativa, porque es la que plantea las preguntas de responsabilidad más urgentes. Preguntar a la sala qué herramientas generativas ya han probado.</p>
-  </div>
 
   <!-- 14 · ¿Qué es la IA responsable? (discusión) -->
   <section class="slide dark">
@@ -478,11 +394,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="sec"><span class="id">Para pensar</span><b>¿Algún ejemplo que hayas visto o vivido?</b></div>
     </div>
   </section>
-  <div class="notes" data-for="14">
-    <span class="nlabel">Nota · diapositiva 14</span>
-    <p><b>La pregunta antes de la respuesta.</b> Abro la discusión: ¿qué haría responsable el uso de la IA generativa? Uso las dos preguntas guía para hacerlo concreto: reconocer el uso irresponsable suele ser más fácil que definir el responsable, y de ahí salen los principios.</p>
-    <p>Escucho y anoto ejemplos; los amarro a los seis principios que vienen enseguida. No corregir «respuestas»: recoger material.</p>
-  </div>
 
   <!-- 15 · Seis principios -->
   <section class="slide dark">
@@ -497,11 +408,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="card"><span class="n">06</span><b>Confiabilidad</b><span>Funciona de forma consistente y se puede comprobar.</span></div>
     </div>
   </section>
-  <div class="notes" data-for="15">
-    <span class="nlabel">Nota · diapositiva 15</span>
-    <p><b>Los seis juntos, como mapa.</b> Los nombro y luego dedico una diapositiva a cada uno. La §1 de la guía va a desarrollarlos. Amarrar cada uno a los ejemplos que salieron en la discusión anterior.</p>
-    <p>En cada principio uso un patrón: mi ejemplo, y luego invito el tuyo. Chile es parte del mundo, así que no separo «mundo» de «Chile»: pido ejemplos de donde sea que los hayan visto.</p>
-  </div>
 
   <!-- 16 · Transparencia -->
   <section class="slide dark">
@@ -513,11 +419,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="cost open"><b>¿Y tú?</b><span>🔎 ¿Has visto algo sobre este tema? Cuéntanos tu ejemplo.</span></div>
     </div>
   </section>
-  <div class="notes" data-for="16">
-    <span class="nlabel">Nota · diapositiva 16</span>
-    <p><b>Transparencia = saber que la IA estuvo ahí.</b> Es la base de todo: si no se declara el uso, no se puede juzgar la equidad, la confiabilidad ni la rendición de cuentas. Conectar con la declaración de IA que pediré en cada entrega.</p>
-    <p><b>Verificar antes de afirmar el ejemplo de Anthropic.</b> Las marcas de agua en imágenes están bien documentadas; los marcadores de procedencia en el texto son un campo en desarrollo. Confirmar el detalle específico antes de darlo por hecho, o mantenerlo general.</p>
-  </div>
 
   <!-- 17 · Explicabilidad -->
   <section class="slide dark">
@@ -529,11 +430,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="cost open"><b>¿Y tú?</b><span>🔎 ¿Has visto una herramienta que no puedas explicar? Cuéntanos.</span></div>
     </div>
   </section>
-  <div class="notes" data-for="17">
-    <span class="nlabel">Nota · diapositiva 17</span>
-    <p><b>Explicabilidad = no una caja negra.</b> No basta con un resultado plausible: hay que poder decir qué hace la herramienta, dónde falla, y cómo se llegó a la salida. Incluye la verificabilidad: comprobar que lo producido existe.</p>
-    <p>Anclar en la agronomía: si no puedo explicar cómo un modelo estimó un dato de suelo o de rendimiento, no debería usarlo para decidir.</p>
-  </div>
 
   <!-- 18 · Equidad -->
   <section class="slide dark">
@@ -545,11 +441,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="cost open"><b>¿Y tú?</b><span>🔎 ¿Qué realidad podría quedar mal representada en los datos? Cuéntanos.</span></div>
     </div>
   </section>
-  <div class="notes" data-for="18">
-    <span class="nlabel">Nota · diapositiva 18</span>
-    <p><b>Equidad = no reproducir ni amplificar el sesgo.</b> El sesgo entra por los datos y por cómo los interpretamos. Las tres prácticas (datos representativos, flujo transparente, evaluar y validar) son las palancas concretas.</p>
-    <p>Anclar en agricultura: datos que no representan a la pequeña agricultura, al secano o a territorios específicos. Vincular con las esperanzas y recelos de las presentaciones.</p>
-  </div>
 
   <!-- 19 · Rendición de cuentas -->
   <section class="slide dark">
@@ -561,11 +452,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="cost open"><b>¿Y tú?</b><span>🔎 ¿Ante quién responderías tú por una decisión apoyada en IA?</span></div>
     </div>
   </section>
-  <div class="notes" data-for="19">
-    <span class="nlabel">Nota · diapositiva 19</span>
-    <p><b>La responsabilidad es humana, no de la herramienta.</b> La IA no decide ni rinde cuentas; responde quien la usa. Rendir cuentas es poder justificar la decisión ante quienes viven sus consecuencias: el agricultor, la comunidad, el estudiantado.</p>
-    <p>Subrayar el «hoy más que nunca»: el uso de IA está bajo la lupa en la academia y fuera de ella. Justificar críticamente cada decisión es lo que protege tu integridad.</p>
-  </div>
 
   <!-- 20 · Accesibilidad -->
   <section class="slide dark">
@@ -577,11 +463,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="cost open"><b>¿Y tú?</b><span>🔎 ¿Quién queda fuera por idioma, medio, costo o conexión?</span></div>
     </div>
   </section>
-  <div class="notes" data-for="20">
-    <span class="nlabel">Nota · diapositiva 20</span>
-    <p><b>Accesibilidad = servir a la comunidad.</b> Barreras: idioma, medio o formato, costo, conectividad, alfabetización digital. Anclar en territorio: la conectividad rural es desigual, y el idioma deja fuera saberes locales.</p>
-    <p>Invitar ejemplos concretos del estudiantado, sin cifras inventadas.</p>
-  </div>
 
   <!-- 21 · Confiabilidad -->
   <section class="slide dark">
@@ -593,11 +474,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="cost open"><b>¿Y tú?</b><span>🔎 ¿Un caso donde no comprobar salió caro? Cuéntanos.</span></div>
     </div>
   </section>
-  <div class="notes" data-for="21">
-    <span class="nlabel">Nota · diapositiva 21</span>
-    <p><b>Confiabilidad = consistencia comprobable.</b> La misma consulta puede dar respuestas distintas. Confiable no es «suena bien», es «rinde de forma estable y lo puedo verificar».</p>
-    <p>El orden importa: diseñar el trabajo antes de recurrir a la IA, mantener a la persona al mando, y refinar. La herramienta no reemplaza el diseño ni el juicio.</p>
-  </div>
 
   <!-- 22 · Los costos -->
   <section class="slide dark">
@@ -611,11 +487,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="cost"><b>Epistémico</b><span>Lo que dejamos de saber, y quién lo decide.</span></div>
     </div>
   </section>
-  <div class="notes" data-for="22">
-    <span class="nlabel">Nota · diapositiva 22</span>
-    <p><b>Aquí lo responsable se vuelve concreto.</b> Cuatro lentes: ambiental, social, cognitivo, epistémico. Los nombro juntos y luego dedico una diapositiva a cada uno.</p>
-    <p>Retomar los recelos de las presentaciones: muchos caen en alguna de estas cuatro categorías.</p>
-  </div>
 
   <!-- 23 · Costo · Ambiental -->
   <section class="slide dark">
@@ -629,11 +500,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     </div>
     <p class="kick">🔎 ¿Qué has leído, visto, escuchado o entendido sobre este tema?</p>
   </section>
-  <div class="notes" data-for="23">
-    <span class="nlabel">Nota · diapositiva 23</span>
-    <p><b>Costo ambiental: agua, energía y materiales, con injusticia ambiental.</b> El más cercano al territorio de la Facultad: la misma agua que estudiamos. El costo no es neutral, recae más sobre unas comunidades que sobre otras.</p>
-    <p>Sin cifras inventadas: que los centros de datos consumen agua de refrigeración y energía, y que el hardware genera residuos electrónicos y extracción de recursos, son hechos generales y bien documentados. Si surge, anclar en el debate local sobre centros de datos en Chile.</p>
-  </div>
 
   <!-- 24 · Costo · Social -->
   <section class="slide dark">
@@ -647,11 +513,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     </div>
     <p class="kick">🔎 ¿Qué has leído, visto, escuchado o entendido sobre este tema?</p>
   </section>
-  <div class="notes" data-for="24">
-    <span class="nlabel">Nota · diapositiva 24</span>
-    <p><b>Costo social.</b> Tres caras: el trabajo humano explotado de etiquetado y moderación (real y poco reconocido), la desinformación y la mala información a escala, y el bienestar (seguridad laboral, bienestar emocional y conexión social).</p>
-    <p>Mantener general, sin nombres de empresas ni cifras inventadas. Invitar ejemplos del estudiantado.</p>
-  </div>
 
   <!-- 25 · Costo · Cognitivo -->
   <section class="slide dark">
@@ -665,11 +526,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     </div>
     <p class="kick">🔎 ¿Qué has leído, visto, escuchado o entendido sobre este tema?</p>
   </section>
-  <div class="notes" data-for="25">
-    <span class="nlabel">Nota · diapositiva 25</span>
-    <p><b>Costo cognitivo.</b> No es «la IA nos hace tontos»: es que las capacidades se mantienen con la práctica. Definir cada término: descarga cognitiva (delegar el pensar), atrofia de habilidades (se pierden por desuso), deuda cognitiva (el costo acumulado de no hacer el trabajo mental).</p>
-    <p>Conectar con las cinco capacidades de la diapositiva 4 y con el liderazgo humano: decidir qué delegar y qué seguir ejercitando.</p>
-  </div>
 
   <!-- 26 · Costo · Epistémico -->
   <section class="slide dark">
@@ -683,11 +539,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     </div>
     <p class="kick">🔎 ¿Qué has leído, visto, escuchado o entendido sobre este tema?</p>
   </section>
-  <div class="notes" data-for="26">
-    <span class="nlabel">Nota · diapositiva 26</span>
-    <p><b>Costo epistémico.</b> El más sutil: la herramienta filtra qué conocimiento llega y cuál queda fuera. Definir cada cara: la falsa sensación de saber (sentirse informado sin estarlo), el robo y la extracción de sistemas de conocimiento, y la homogeneización de la información.</p>
-    <p>Anclar en territorio: los saberes locales y campesinos suelen estar ausentes de los datos de entrenamiento. Donde la red no llega, la IA no puede estimar.</p>
-  </div>
 
   <!-- 27 · Q&A → Pausa -->
   <section class="slide dark">
@@ -699,11 +550,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="box"><span class="k">Y luego</span><b>Pausa · 15 minutos</b><span>Volvemos al taller: co-creamos la §1 de la guía.</span></div>
     </div>
   </section>
-  <div class="notes" data-for="27">
-    <span class="nlabel">Nota · diapositiva 27</span>
-    <p><b>Cierre de la primera mitad y transición.</b> Un Q&A breve: recoger dudas y desacuerdos, no solo preguntas de aclaración. Luego 15 minutos de pausa.</p>
-    <p>Después de la pausa cambiamos de modo: de la conversación al taller práctico. Anticiparlo.</p>
-  </div>
 
   <!-- 28 · Al taller -->
   <section class="slide dark">
@@ -722,11 +568,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="sbox"><span class="sn">Paso 3</span><b>Autor y revisor</b><span>la tarea de la semana</span></div>
     </div>
   </section>
-  <div class="notes" data-for="28">
-    <span class="nlabel">Nota · diapositiva 28</span>
-    <p><b>Arranca la parte práctica.</b> Que escaneen el QR y soliciten acceso al documento colectivo antes de empezar a escribir; verificar que todas y todos entraron. La §1 cubre lo que vimos: seis principios y cuatro costos, diez párrafos posibles.</p>
-    <p>Recorrer los tres pasos: primero decidimos la herramienta juntas (siguiente diapositiva), luego el reparto de párrafos, luego el modelo autor y revisor. Mantener «autor individual», nunca «grupo».</p>
-  </div>
 
   <!-- 29 · Las tres preguntas -->
   <section class="slide dark">
@@ -743,11 +584,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <div class="step"><span class="sn">3</span><b>Declarar</b></div>
     </div>
   </section>
-  <div class="notes" data-for="29">
-    <span class="nlabel">Nota · diapositiva 29</span>
-    <p><b>El ritual que aplicamos todo el curso.</b> Examinar (¿qué hace la herramienta?), decidir (¿por qué usarla o no?, aquí vive el costo y a quién le cuesta), declarar (dejar constancia de la decisión).</p>
-    <p>Cada uso de IA termina en una declaración: esa es la disciplina que hace visible el liderazgo humano. Lo aplicamos en vivo enseguida.</p>
-  </div>
 
   <!-- 30 · ¿Qué herramienta usamos? -->
   <section class="slide dark">
@@ -760,11 +596,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       <span class="small">Al terminar, la declaración: qué herramienta (o ninguna), qué acepté, qué modifiqué, qué rechacé, y por qué.</span>
     </div>
   </section>
-  <div class="notes" data-for="30">
-    <span class="nlabel">Nota · diapositiva 30</span>
-    <p><b>Aplicar el ritual en vivo a Gemini Pro Deep Research.</b> Modelar cada pregunta con la clase. Lo importante es que el acto de decidir es el ejercicio, no la herramienta: usarla con juicio o no usar ninguna, ambas son correctas si el criterio se hace explícito.</p>
-    <p>Si la usamos: modelar la declaración en tiempo real (qué acepto, qué modifico, qué rechazo). Si no: escribir sin herramienta y declarar esa decisión. La IA busca, sintetiza, genera; no piensa ni decide.</p>
-  </div>
 
   <!-- 31 · Elige un principio y un costo -->
   <section class="slide dark">
@@ -782,11 +613,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     </div>
     <p class="kick">Antes de irnos lo decidimos juntas: ¿prefieres traer tu laptop y trabajar aquí, o una alternativa?</p>
   </section>
-  <div class="notes" data-for="31">
-    <span class="nlabel">Nota · diapositiva 31</span>
-    <p><b>La tarea, clara.</b> Cada quien escribe dos párrafos breves: uno sobre un principio (de los seis) y uno sobre un costo (de los cuatro). El traslape entre estudiantes está bien; sintetizamos las versiones después. Que elijan por interés o por disponibilidad.</p>
-    <p>Insistir en la autoría nombrada y la declaración de IA al pie. Cerrar con la decisión logística: preguntar si prefieren traer su laptop y trabajar en la sala, o una alternativa; acordarlo con el grupo antes de irnos.</p>
-  </div>
 
   <!-- 32 · Cierre -->
   <section class="slide dark">
@@ -800,11 +626,6 @@ body.shownotes .notes:not(.active-note){display:none;}
     <p class="closing">Hoy no aprendimos a usar la IA. Aprendimos a decidir cuándo, cómo y por qué.</p>
     <p style="margin-top:3vmin; font-size:clamp(13px,1.6vmin,17px); color:#b7c2cb; line-height:1.45;"><b style="color:#dbe2e7;">Declaración:</b> esta presentación se produjo con asistencia de IA (Claude Code). El contenido, las decisiones de diseño y la responsabilidad final son de Asa B. Stone.</p>
   </section>
-  <div class="notes" data-for="32">
-    <span class="nlabel">Nota · diapositiva 32</span>
-    <p><b>Cierre.</b> La reflexión semanal por QR se hace ahora, en clase: proyectar el código y dar dos minutos. Adelantar la S2 en una frase.</p>
-    <p>Cerrar con la línea de fondo: el curso no es sobre la herramienta, es sobre el criterio. La declaración de uso de IA al pie cierra el ciclo y modela la transparencia que enseñamos.</p>
-  </div>
 
 </div>
 
@@ -812,12 +633,11 @@ body.shownotes .notes:not(.active-note){display:none;}
 <div class="nav next" id="next" aria-label="Siguiente"></div>
 
 <div class="hud"><span class="count" id="count">1 / 32</span></div>
-<div class="hint">← → avanzar · <b>N</b> notas · <b>F</b> pantalla completa</div>
+<div class="hint">← → avanzar · <b>F</b> pantalla completa</div>
 
 <script>
 (function(){
   var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
-  var notes  = Array.prototype.slice.call(document.querySelectorAll('.notes'));
   var total  = slides.length;
   var i = 0;
   var progress = document.getElementById('progress');
@@ -825,7 +645,6 @@ body.shownotes .notes:not(.active-note){display:none;}
 
   function render(){
     slides.forEach(function(s,n){ s.classList.toggle('active', n===i); });
-    notes.forEach(function(nt){ nt.classList.toggle('active-note', nt.getAttribute('data-for')==String(i+1)); });
     progress.style.width = ((i+1)/total*100) + '%';
     count.textContent = (i+1) + ' / ' + total;
     if(location.hash !== '#'+(i+1)) history.replaceState(null,'','#'+(i+1));
@@ -843,7 +662,6 @@ body.shownotes .notes:not(.active-note){display:none;}
       case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
       case 'Home': go(0); break;
       case 'End': go(total-1); break;
-      case 'n': case 'N': document.body.classList.toggle('shownotes'); break;
       case 'f': case 'F':
         if(!document.fullscreenElement){ document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen(); }
         else { document.exitFullscreen&&document.exitFullscreen(); }
