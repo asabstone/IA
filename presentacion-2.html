@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deck · Sesión 2 · ¿Cómo investigamos con IA?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,500;0,6..12,700;0,6..12,800;1,6..12,400&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#283A57">
+<style>
+:root{
+  --kami:#F1F2EF; --kumo:#FBFCFA; --suna:#DEDFD9; --sumi:#1A1B19; --hai:#4E524C;
+  --earth:#9C7A45; --earth-ink:#6B5330; --water:#2F7E9C; --water-ink:#255E73;
+  --fire:#DB5A2A; --fire-ink:#A8481C; --wind:#6B8E7F; --wind-ink:#3f6154; --void:#283A57;
+  --sky:#9fd0e0;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{
+  background:var(--void); color:var(--sumi);
+  font-family:'Nunito Sans',system-ui,sans-serif; font-weight:400;
+  -webkit-font-smoothing:antialiased; overflow:hidden;
+}
+.serif{font-family:'Cormorant Garamond',Georgia,serif;}
+
+/* ---------- deck mechanics ---------- */
+.deck{position:fixed; inset:0;}
+.slide{
+  position:absolute; inset:0;
+  display:none; flex-direction:column; justify-content:center;
+  padding:6.5vmin 8.5vmin; background:var(--void); color:var(--kumo);
+}
+.slide.active{display:flex; animation:fade .35s ease;}
+@keyframes fade{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+@media(prefers-reduced-motion:reduce){.slide.active{animation:none;}}
+.slide.dark{background:var(--void); color:var(--kumo);}
+
+/* shared type · mínimo legible elevado para proyección */
+.eyebrow{font-weight:600; text-transform:uppercase; letter-spacing:.24em;
+  font-size:clamp(20px,1.8vmin,21px); color:var(--sky); margin:0 0 3vmin;}
+.stitle{font-weight:300; letter-spacing:-.01em; line-height:1.05;
+  font-size:clamp(34px,7.6vmin,84px); color:#fff;}
+.lead{font-size:clamp(21px,3vmin,33px); line-height:1.48; color:#dbe2e7; margin-top:2.6vmin; max-width:27em;}
+.kick{font-size:clamp(20px,2.4vmin,25px); color:var(--sky); font-weight:700; margin-top:3.4vmin; max-width:36em;}
+
+/* énfasis sobre el fondo cielo */
+.lead b, .slide p b{color:#fff !important;}
+.lead em{color:#fff !important;}
+p[style*='--hai']{color:#dbe2e7 !important;}
+
+/* portada */
+.cover .meta{margin-top:4.4vmin; font-size:clamp(20px,2.2vmin,23px); color:#dbe2e7;}
+.cover .meta b{color:#fff; font-weight:700;}
+.cover .rule{height:4px; width:min(18vmin,150px); background:var(--sky); border-radius:4px; margin:4.4vmin 0 0;}
+.cover .tagline{font-family:'Cormorant Garamond',Georgia,serif; font-style:italic; font-weight:300;
+  font-size:clamp(22px,3.8vmin,42px); line-height:1.22; color:var(--sky); margin-top:3vmin; max-width:24em;}
+.subline{margin-top:1.6vmin; font-size:clamp(20px,2.2vmin,23px); color:var(--sky);}
+
+/* bullets */
+ul.blist{list-style:none; margin-top:2.4vmin;}
+ul.blist li{position:relative; padding-left:3.4vmin; margin-bottom:1.5vmin;
+  font-size:clamp(21px,2.7vmin,29px); line-height:1.38; color:#e4e8ea;}
+ul.blist li::before{content:""; position:absolute; left:0; top:.55em;
+  width:1.1vmin; height:1.1vmin; min-width:9px; min-height:9px; background:var(--sky); border-radius:50%;}
+ul.blist li b{color:#fff;}
+
+/* secciones (tarjetas claras) */
+.rev{display:flex; flex-direction:column; gap:1.8vmin; margin-top:3.4vmin;}
+.rev .sec{background:var(--kumo); border:1px solid var(--suna); border-left:6px solid var(--water);
+  border-radius:11px; padding:2.6vmin 3.2vmin;}
+.rev .sec .id{font-weight:700; color:var(--water-ink); font-size:clamp(20px,1.8vmin,20px); letter-spacing:.05em;}
+.rev .sec b{display:block; color:var(--void); font-size:clamp(20px,2.6vmin,27px); font-weight:700; margin:.4vmin 0;}
+.rev .sec span{color:var(--hai); font-size:clamp(20px,2.15vmin,24px);}
+.rev.tight{gap:1.3vmin; margin-top:3vmin;}
+.rev.tight .sec{padding:1.9vmin 3vmin; display:flex; align-items:baseline; gap:2.2vmin; flex-wrap:wrap;}
+.rev.tight .sec .id{min-width:7em; color:var(--water); flex-shrink:0;}
+.rev.tight .sec b{display:inline; margin:0; font-size:clamp(20px,2.4vmin,26px);}
+
+/* grids de tarjetas */
+.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:2vmin; margin-top:3.4vmin;}
+.card{background:var(--kumo); border:1px solid var(--suna); border-top:4px solid var(--water);
+  border-radius:11px; padding:2.8vmin 2.8vmin; display:flex; flex-direction:column; gap:.9vmin;}
+.card .n{font-weight:800; color:var(--water); font-size:clamp(20px,2vmin,21px); font-variant-numeric:tabular-nums;}
+.card b{color:var(--void); font-size:clamp(20px,2.5vmin,28px); font-weight:700; line-height:1.15;}
+.card span{color:var(--hai); font-size:clamp(20px,2.15vmin,24px); line-height:1.4;}
+.card.lv-no{border-top-color:var(--earth);} .card.lv-no .n{color:var(--earth-ink);}
+.card.lv-si{border-top-color:var(--water);} .card.lv-si .n{color:var(--water-ink);}
+.card.lv-mas{border-top-color:var(--wind);} .card.lv-mas .n{color:var(--wind-ink);}
+.card.s{border-top-color:var(--wind);} .card.s .n{color:var(--wind-ink);}
+.card.e{border-top-color:var(--earth);} .card.e .n{color:var(--earth-ink);}
+.card.t{border-top-color:var(--water);} .card.t .n{color:var(--water-ink);}
+
+/* Venn SETS · tres círculos superpuestos, con leyenda fuera */
+.venn{position:relative; --s:min(28vmin,232px); width:calc(var(--s)*1.55); height:calc(var(--s)*1.5); margin:3vmin auto 0;}
+.venn .vc{position:absolute; width:var(--s); height:var(--s); border-radius:50%; border:2px solid;
+  display:flex; align-items:center; justify-content:center; text-align:center;}
+.venn .vc b{font-weight:800; color:#fff; font-size:clamp(20px,2.6vmin,28px); line-height:1.03;}
+.venn .social{top:0; left:50%; margin-left:calc(var(--s)*-0.5); background:rgba(107,142,127,.42); border-color:#9cc0b2;
+  align-items:flex-start; padding-top:2.6vmin;}
+.venn .eco{bottom:0; left:0; background:rgba(156,122,69,.42); border-color:#d3b483;
+  justify-content:flex-start; padding-left:2vmin;}
+.venn .tec{bottom:0; right:0; background:rgba(47,126,156,.44); border-color:#7fc0d8;
+  justify-content:flex-end; padding-right:2vmin;}
+.venn .vcenter{position:absolute; left:50%; top:54%; transform:translate(-50%,-50%); z-index:2;
+  color:#fff; font-weight:800; text-align:center; font-size:clamp(20px,2.5vmin,27px);
+  letter-spacing:.05em; text-shadow:0 1px 7px rgba(0,0,0,.6);}
+.vlegend{display:flex; justify-content:center; gap:1.6vmin 4vmin; margin-top:2.8vmin; flex-wrap:wrap;}
+.vlegend div{display:flex; align-items:center; gap:1.2vmin; color:#dbe2e7; font-size:clamp(20px,2.15vmin,24px);}
+.vlegend i{width:1.5vmin; height:1.5vmin; min-width:14px; min-height:14px; border-radius:50%; display:inline-block; flex-shrink:0;}
+.vlegend b{color:#fff; font-weight:800;}
+.vlegend .sws{background:#6B8E7F;} .vlegend .swe{background:#9C7A45;} .vlegend .swt{background:#2F7E9C;}
+
+/* Venn 2 círculos · métodos mixtos */
+.venn2{position:relative; --s:min(31vmin,258px); width:calc(var(--s)*1.76); height:var(--s); margin:3vmin auto 0;}
+.venn2 .vc{position:absolute; top:0; width:var(--s); height:var(--s); border-radius:50%; border:2px solid; display:flex; align-items:center;}
+.venn2 .vc b{font-weight:800; color:#fff; font-size:clamp(19px,2.2vmin,24px); line-height:1.03;}
+.venn2 .quant{left:0; background:rgba(47,126,156,.42); border-color:#7fc0d8; justify-content:flex-start; padding-left:3.4vmin;}
+.venn2 .qual{right:0; background:rgba(219,90,42,.34); border-color:#e69a7a; justify-content:flex-end; padding-right:3.4vmin;}
+.venn2 .vcenter{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:2;
+  color:#fff; font-weight:800; text-align:center; font-size:clamp(20px,2.5vmin,27px);
+  letter-spacing:.05em; text-shadow:0 1px 7px rgba(0,0,0,.6);}
+.vlegend .swq{background:#2F7E9C;} .vlegend .swc{background:#DB5A2A;}
+
+/* Triángulo fuzzy SETS */
+.tri{position:relative; width:min(50vmin,420px); margin:2.2vmin auto 0; padding:3.2vmin 0 3.4vmin;}
+.tri svg{width:100%; height:auto; display:block; overflow:visible;}
+.tri .tl{position:absolute; font-weight:800; color:#fff; font-size:clamp(20px,2.4vmin,27px); white-space:nowrap;}
+.tri .tl-s{top:0; left:50%; transform:translateX(-50%);}
+.tri .tl-e{bottom:0; left:0;}
+.tri .tl-t{bottom:0; right:0;}
+.trinote{margin-top:1.8vmin; text-align:center; color:#dbe2e7; font-size:clamp(20px,2.1vmin,23px); line-height:1.4;}
+.trinote b{color:#fff;}
+
+/* burbujas de diálogo · voces de estudiantes */
+.bubbles{display:flex; gap:2.4vmin; margin-top:3.4vmin; flex-wrap:wrap; align-items:flex-start;}
+.bubble{flex:1; min-width:220px; position:relative; background:var(--kumo); border:1px solid var(--suna);
+  border-radius:18px; padding:2.6vmin 2.9vmin;}
+.bubble::after{content:""; position:absolute; bottom:-1.5vmin; left:3.2vmin; width:0; height:0;
+  border-left:1.5vmin solid transparent; border-right:1.5vmin solid transparent; border-top:1.7vmin solid var(--kumo);}
+.bubble b{display:block; color:var(--void); font-size:clamp(20px,2.5vmin,27px); font-weight:700; margin-bottom:.7vmin;}
+.bubble span{color:var(--hai); font-size:clamp(20px,2.1vmin,23px); line-height:1.4;}
+.bubble:nth-child(2){margin-top:2.6vmin;} .bubble:nth-child(3){margin-top:5.2vmin;}
+
+.costs{display:grid; grid-template-columns:repeat(2,1fr); gap:2vmin; margin-top:1vmin;}
+.cost{background:var(--kumo); border:1px solid var(--suna); border-left:5px solid var(--water);
+  border-radius:10px; padding:2.5vmin 3vmin;}
+.cost b{display:block; color:var(--void); font-size:clamp(20px,2.5vmin,27px); font-weight:700;}
+.cost span{color:var(--hai); font-size:clamp(20px,2.15vmin,24px); line-height:1.38;}
+.cost.open{border-left-color:var(--wind); border-style:dashed;}
+.cost.open span{color:var(--wind-ink);}
+.cost .when{color:var(--water); font-weight:800; font-size:clamp(20px,1.8vmin,20px); letter-spacing:.03em;}
+
+/* comparación */
+.compare{display:grid; grid-template-columns:1fr 1fr; gap:2.4vmin; margin-top:3vmin;}
+.compare .col{background:var(--kumo); border:1px solid var(--suna); border-radius:12px; padding:2.8vmin 3vmin; border-top:4px solid var(--water);}
+.compare .col.gen{border-top-color:var(--fire);}
+.compare .col.no{border-top-color:var(--earth);}
+.compare .col.si{border-top-color:var(--wind);}
+.compare .col h3{color:var(--void); font-size:clamp(20px,2.5vmin,26px); font-weight:800;}
+.compare .col .sub{display:block; color:var(--hai); font-size:clamp(20px,1.7vmin,20px); margin:.2vmin 0 1.4vmin;}
+.compare .col ul{list-style:none;}
+.compare .col li{color:var(--sumi); font-size:clamp(20px,2.05vmin,22px); line-height:1.48; margin-bottom:.3vmin;}
+.compare .col li b{color:var(--void); font-weight:700;}
+
+/* preguntas / capacidades / héroe */
+.threeq{display:flex; flex-direction:column; gap:2.4vmin; margin-top:3.4vmin;}
+.threeq .q{font-family:'Cormorant Garamond',Georgia,serif; font-weight:400;
+  font-size:clamp(26px,5vmin,58px); line-height:1.08; color:#fff; padding-left:5vmin; position:relative;}
+.threeq .q .qn{position:absolute; left:0; top:.05em; color:var(--sky); font-weight:500; font-size:.62em;}
+.hero{font-family:'Cormorant Garamond',Georgia,serif; font-weight:300; line-height:1;
+  font-size:clamp(52px,12vmin,140px); color:#fff; margin-top:2vmin;}
+.flow{display:flex; gap:2vmin; margin-top:4vmin; flex-wrap:wrap;}
+.flow .step{flex:1; min-width:150px; background:rgba(159,208,224,.12); border:1px solid rgba(159,208,224,.28);
+  border-radius:10px; padding:2.6vmin 2.2vmin; text-align:center;}
+.flow .step .sn{display:block; color:var(--sky); font-weight:800; font-size:clamp(20px,1.9vmin,20px); margin-bottom:.7vmin;}
+.flow .step b{color:#fff; font-size:clamp(20px,2.4vmin,26px); font-weight:700;}
+.flow .step span{display:block; color:#dbe2e7; font-size:clamp(20px,2vmin,22px); margin-top:.7vmin; line-height:1.34;}
+.flow.five{gap:1.5vmin; margin-top:3vmin;}
+.flow.five .step{min-width:118px; padding:2.2vmin 1.6vmin;}
+.flow.five .step b{font-size:clamp(20px,2.1vmin,23px);}
+.flow.five .step span{font-size:clamp(20px,1.85vmin,20px);}
+
+/* entrega */
+.deliv{background:var(--kumo); border:1px solid var(--suna); border-radius:13px; padding:3.2vmin 3.8vmin; margin-top:2vmin;}
+.deliv .top{display:flex; justify-content:space-between; align-items:baseline; gap:2vmin; flex-wrap:wrap;}
+.deliv .top b{color:var(--void); font-size:clamp(20px,3vmin,32px); font-weight:700;}
+.deliv .pct{color:var(--water); font-weight:800; font-size:clamp(22px,3.4vmin,38px);}
+.deliv .facts{display:flex; flex-wrap:wrap; gap:1vmin 3vmin; margin:2vmin 0 .4vmin;
+  font-size:clamp(20px,2vmin,21px); color:var(--hai);}
+.deliv .facts b{color:var(--sumi); font-weight:700;}
+ul.check{list-style:none; margin-top:1.6vmin;}
+ul.check li{position:relative; padding-left:3.4vmin; margin-bottom:1.4vmin;
+  font-size:clamp(20px,2.2vmin,25px); line-height:1.35; color:var(--sumi);}
+ul.check li::before{content:"\2610"; position:absolute; left:0; top:-.05em; color:var(--water); font-size:1.15em;}
+ul.check li b{color:var(--void); font-weight:700;}
+
+/* callout */
+.callout{background:var(--kumo); border:1px solid var(--suna); border-left:6px solid var(--water);
+  border-radius:11px; padding:2.8vmin 3.4vmin; margin-top:3vmin;}
+.callout .k{display:block; text-transform:uppercase; letter-spacing:.2em; font-size:clamp(20px,1.5vmin,20px);
+  color:var(--water-ink); font-weight:700; margin-bottom:1.2vmin;}
+.callout q{font-style:italic; color:var(--void); font-size:clamp(20px,3vmin,32px); line-height:1.3; quotes:"«" "»";}
+.callout .small{display:block; margin-top:1.2vmin; color:var(--hai); font-size:clamp(20px,2vmin,22px);}
+.callout ul{list-style:none; margin-top:.6vmin;}
+.callout ul li{position:relative; padding-left:3vmin; margin-top:1vmin; color:var(--sumi);
+  font-size:clamp(20px,2.15vmin,23px); line-height:1.36;}
+.callout ul li::before{content:"\1F50E"; position:absolute; left:0; top:0; font-size:.9em;}
+.callout ul li b{color:var(--void); font-weight:700;}
+
+/* QR */
+.qrrow{display:flex; align-items:center; gap:3vmin; margin-top:3vmin; flex-wrap:wrap;}
+.qr{background:#fff; border-radius:12px; padding:1.4%; display:block;}
+.qrrow .qr{width:min(20vmin,160px);}
+.qrrow .qrtext b{display:block; color:#fff; font-size:clamp(20px,2.7vmin,28px); font-weight:700;}
+.qrrow .qrtext span{display:block; margin-top:.6vmin; color:#dbe2e7; font-size:clamp(20px,2.1vmin,22px); max-width:20em; line-height:1.4;}
+
+/* cierre two-up */
+.twoup{display:grid; grid-template-columns:1fr 1fr; gap:2.4vmin; margin-top:3.4vmin;}
+.twoup .box{background:rgba(159,208,224,.1); border:1px solid rgba(159,208,224,.26); border-radius:12px; padding:3vmin;}
+.twoup .box .k{color:var(--sky); text-transform:uppercase; letter-spacing:.2em; font-size:clamp(20px,1.5vmin,20px); font-weight:700;}
+.twoup .box b{display:block; color:#fff; font-size:clamp(20px,2.7vmin,30px); font-weight:700; margin:1.1vmin 0 .6vmin; line-height:1.15;}
+.twoup .box span{color:#dbe2e7; font-size:clamp(20px,2.1vmin,24px);}
+.twoup .box .qr{width:min(18vmin,140px); margin-top:1.8vmin;}
+
+/* pasos horizontales con flechas */
+.steparrows{display:flex; align-items:stretch; gap:1.4vmin; margin-top:2.6vmin; flex-wrap:wrap;}
+.steparrows .sbox{flex:1; min-width:180px; background:rgba(159,208,224,.12); border:1px solid rgba(159,208,224,.28);
+  border-radius:10px; padding:2.6vmin 2.2vmin; text-align:center; display:flex; flex-direction:column; gap:.6vmin; justify-content:center;}
+.steparrows .sbox .sn{color:var(--sky); font-weight:800; font-size:clamp(20px,1.9vmin,20px);}
+.steparrows .sbox b{color:#fff; font-size:clamp(20px,2.3vmin,25px); font-weight:700; line-height:1.18;}
+.steparrows .sbox span{color:#dbe2e7; font-size:clamp(20px,1.95vmin,21px); line-height:1.3;}
+.steparrows .arrow{display:flex; align-items:center; color:var(--sky); font-weight:700; font-size:clamp(26px,4vmin,44px);}
+.arrowdown{text-align:center; color:var(--sky); font-size:clamp(24px,3.4vmin,40px); line-height:1; margin:.6vmin 0;}
+.steparrows .sbox.loop{background:rgba(159,208,224,.07); border-style:dashed;}
+.steparrows .arrow.loopback{color:var(--sky);}
+.closing{margin-top:4vmin; font-family:'Cormorant Garamond',Georgia,serif; font-weight:300; font-style:italic;
+  font-size:clamp(22px,3.6vmin,40px); line-height:1.22; color:var(--sky);}
+
+/* nivel novato→erudito */
+.arc{display:inline-block; margin-top:2.6vmin; padding:1vmin 2.2vmin; border-radius:999px;
+  background:rgba(159,208,224,.14); border:1px solid rgba(159,208,224,.3);
+  color:var(--sky); font-weight:700; font-size:clamp(20px,1.9vmin,20px); letter-spacing:.02em;}
+.free{margin-top:2vmin; color:#9fb4c2; font-size:clamp(20px,1.8vmin,20px);}
+.free b{color:var(--sky);}
+
+/* ---------- HUD ---------- */
+.hud{position:fixed; left:0; right:0; bottom:0; z-index:40; display:flex; align-items:center;
+  gap:14px; padding:10px 18px; font-size:12px; color:#9aa7b5; pointer-events:none;}
+.hud .count{font-variant-numeric:tabular-nums; letter-spacing:.05em;}
+.progress{position:fixed; left:0; top:0; height:4px; background:var(--sky); width:0; z-index:41; transition:width .3s ease;}
+.hint{position:fixed; right:16px; bottom:12px; z-index:40; font-size:11px; color:#9aa7b5;
+  letter-spacing:.03em; opacity:.72;}
+.hint b{color:var(--sky); font-weight:700;}
+
+.nav{position:fixed; top:0; bottom:34px; width:22%; z-index:30; cursor:pointer; background:transparent;}
+.nav.prev{left:0;} .nav.next{right:0;}
+
+@media print{
+  @page{size:landscape; margin:14mm;}
+  body{background:#fff; color:var(--sumi); overflow:visible; height:auto;}
+  .deck{position:static;}
+  .hud,.progress,.hint,.nav{display:none !important;}
+  .slide{position:static; display:flex !important; min-height:auto; page-break-after:always;
+    background:var(--void) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    border-radius:10px; margin-bottom:8mm; padding:16mm;}
+}
+
+@media(max-width:760px){
+  .cards,.compare{grid-template-columns:1fr 1fr;} .costs,.twoup{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 · Portada (igual a la Sesión 1) -->
+  <section class="slide dark cover">
+    <p class="eyebrow">Facultad de Ciencias Agronómicas · Universidad de Chile</p>
+    <h1 class="stitle serif">Inteligencia Artificial Responsable<br>para la Investigación</h1>
+    <p class="tagline">Haz de la IA una aliada de tu investigación,<br>con criterio y propósito.</p>
+    <div class="rule"></div>
+    <p class="meta"><b>Asa B. Stone, PhD</b> · Profesora visitante · Fulbright Scholar 2026–27</p>
+  </section>
+
+  <!-- 2 · Leí sus reflexiones -->
+  <section class="slide dark">
+    <p class="eyebrow">Antes de empezar · los escuché</p>
+    <h2 class="stitle serif">Leí sus reflexiones</h2>
+    <p class="lead" style="max-width:43em;">Estamos en la misma sintonía: su curiosidad enlaza directo con lo de hoy. Gracias por sus reflexiones. Buena parte de la sesión de hoy la escribieron ustedes:</p>
+    <div class="bubbles">
+      <div class="bubble"><b>Los costos y la diversidad</b><span>Los empleos, lo real frente a lo sintético, y cómo no homogenizar el saber.</span></div>
+      <div class="bubble"><b>Usar con criterio</b><span>De forma holística y ética, figuras para artículos dentro de la norma, y declarar el uso.</span></div>
+      <div class="bubble"><b>Herramientas nuevas</b><span>Explorar otras IA, y conocer más sobre Claude.</span></div>
+    </div>
+    <p class="kick">Hoy le ponemos nombre a cada una. Empecemos.</p>
+  </section>
+
+  <!-- 3 · Cosecha de la §1 -->
+  <section class="slide dark">
+    <p class="eyebrow">Antes de avanzar · cosechamos lo de la semana</p>
+    <h2 class="stitle serif">Lo que trajiste</h2>
+    <p class="lead" style="margin-top:1.4vmin; max-width:38em;">Partimos escuchándonos. Cuéntanos, en breve:</p>
+    <ul class="blist">
+      <li>Qué <b>principio</b> y qué <b>costo</b> escribiste, y por qué elegiste esos.</li>
+      <li>La <b>noticia, el evento o la acción sobre IA</b> que traías de tu semana.</li>
+      <li>Qué te dejó <b>revisar el párrafo</b> de otra persona.</li>
+    </ul>
+  </section>
+
+  <!-- 3 · De vuelta -->
+  <section class="slide dark">
+    <p class="eyebrow">De vuelta</p>
+    <h2 class="stitle serif">Seguimos donde quedamos</h2>
+    <p class="lead" style="max-width:36em;">La semana pasada abrimos la guía de campo con la §1: los principios y los costos, cada párrafo con un nombre. Hoy la hacemos crecer con ejemplos situados en tu propia investigación.</p>
+    <p class="kick">Siguen en pie los tres acuerdos:</p>
+    <div class="flow" style="margin-top:2.4vmin;">
+      <div class="step"><b>Espacio relacional</b><span>Construimos vínculos que siguen después del curso.</span></div>
+      <div class="step"><b>Espacio seguro</b><span>Todas las preguntas caben. La confusión es parte de aprender.</span></div>
+      <div class="step"><b>Espacio creativo</b><span>Cada saber en la sala cuenta, incluido el tuyo.</span></div>
+    </div>
+  </section>
+
+  <!-- 4 · La agenda de hoy -->
+  <section class="slide dark">
+    <p class="eyebrow">Sesión 2 de 4 · Hoy · Sala Depto. Ingesu</p>
+    <h2 class="stitle serif">La agenda de hoy</h2>
+    <div class="rev tight">
+      <div class="sec"><span class="id">14:00 · 30 min</span><b>Repaso: finalizamos las entregas de la sesión anterior</b></div>
+      <div class="sec"><span class="id">14:30 · 15 min</span><b>Apertura: reencuadramos y cosechamos la §1</b></div>
+      <div class="sec"><span class="id">14:45 · 60 min</span><b>Fundamentos: pensamos en sistemas</b></div>
+      <div class="sec"><span class="id">15:45 · 15 min</span><b>Pausa</b></div>
+      <div class="sec"><span class="id">16:00 · 60 min</span><b>Studio: co-creamos la §2 de la guía</b></div>
+      <div class="sec"><span class="id">17:00 · 15 min</span><b>Cierre: reflexionamos y miramos lo que viene</b></div>
+    </div>
+  </section>
+
+  <!-- 5 · Dónde estamos -->
+  <section class="slide dark">
+    <p class="eyebrow">Dónde estamos en el arco</p>
+    <h2 class="stitle serif">Hoy: pensar en sistemas</h2>
+    <p class="lead" style="max-width:40em;">De las cuatro sesiones, esta ancla la segunda competencia del curso: <b>pensar en sistemas</b>. Integrar datos cualitativos y cuantitativos, y ver cómo interactúan lo social, lo ecológico y lo tecnológico.</p>
+    <div class="costs" style="margin-top:2.8vmin;">
+      <div class="cost" style="opacity:.45;"><span class="when">Sesión 1</span><b>¿Por qué la IA responsable?</b><span>Exploramos los fundamentos.</span></div>
+      <div class="cost" style="border-left:8px solid var(--sky); box-shadow:0 8px 26px rgba(0,0,0,.3);"><span class="when" style="color:var(--water-ink);">Sesión 2 · hoy</span><b>¿Cómo investigamos con IA?</b><span>Investigamos con criterio.</span></div>
+    </div>
+  </section>
+
+  <!-- 6 · ¿Cómo investigas hoy? + workflow -->
+  <section class="slide dark">
+    <p class="eyebrow">Conversemos · el flujo de la investigación</p>
+    <h2 class="stitle serif">¿Cómo investigas hoy?</h2>
+    <p class="lead" style="max-width:44em;">Toda investigación recorre un ciclo, de la pregunta a la publicación, y cada fase deja su huella en una parte del manuscrito. ¿Dónde entra la IA en el tuyo, y dónde no?</p>
+    <div class="steparrows" style="margin-top:2.2vmin;">
+      <div class="sbox"><span class="sn">1 · Introducción</span><b>Pregunta</b></div>
+      <div class="arrow">→</div>
+      <div class="sbox"><span class="sn">2 · Marco teórico</span><b>Literatura</b></div>
+      <div class="arrow">→</div>
+      <div class="sbox"><span class="sn">3 · Metodología</span><b>Diseño y datos</b></div>
+    </div>
+    <div class="arrowdown" style="text-align:right; padding-right:15%;">↓</div>
+    <div class="steparrows">
+      <div class="sbox"><span class="sn">6 · Conclusión · Referencias</span><b>Validar y declarar</b></div>
+      <div class="arrow">←</div>
+      <div class="sbox"><span class="sn">5 · Discusión</span><b>Escritura</b></div>
+      <div class="arrow">←</div>
+      <div class="sbox"><span class="sn">4 · Resultados</span><b>Análisis</b></div>
+    </div>
+    <p class="kick">🔎 ¿En qué fase estás ahora? ¿Y en cuál confías más en la IA, y en cuál menos?</p>
+  </section>
+
+  <!-- 7 · SETS · triángulo fuzzy (lente interdisciplinaria) -->
+  <section class="slide dark">
+    <p class="eyebrow">Pensar en sistemas · lente interdisciplinaria</p>
+    <h2 class="stitle serif">El triángulo socio-ecológico-tecnológico</h2>
+    <p class="lead" style="max-width:46em;">Un marco para investigación interdisciplinaria. En su versión difusa (<em>fuzzy SETS</em>), tu investigación tiene <b>membresía parcial</b> en los tres vértices a la vez, como el triángulo textural del suelo. Y la IA responsable se sitúa en los <b>cruces</b>, en cómo interactúan, no en una esquina.</p>
+    <div class="tri">
+      <svg viewBox="0 0 120 100" aria-label="Triángulo socio-ecológico-tecnológico">
+        <polygon points="60,7 9,95 111,95" fill="rgba(159,208,224,.05)" stroke="#9fd0e0" stroke-width="0.7"/>
+        <circle cx="42" cy="58" r="2.6" fill="#9cc0b2"/>
+        <circle cx="82" cy="84" r="2.6" fill="#7fc0d8"/>
+      </svg>
+      <span class="tl tl-s">Social</span>
+      <span class="tl tl-e">Ecológico</span>
+      <span class="tl tl-t">Tecnológico</span>
+    </div>
+    <p class="trinote">Ejemplos: <b>la gobernanza del agua</b> (social + ecológico) · <b>un sensor de suelo</b> (técnico + ecológico).</p>
+    <p class="kick">🔎 ¿Dónde cae tu investigación en el triángulo?</p>
+  </section>
+
+  <!-- 9 · Métodos mixtos -->
+  <section class="slide dark">
+    <p class="eyebrow">El corazón del caso · evaluar la IA con responsabilidad</p>
+    <h2 class="stitle serif">Métodos mixtos</h2>
+    <p class="lead" style="max-width:40em;">Integrar lo cualitativo y lo cuantitativo, no elegir uno. Evaluar la IA con responsabilidad también es mixto: no solo si la herramienta funcionó (la cifra), sino qué significó para tu trabajo (el contexto).</p>
+    <div class="venn2">
+      <div class="vc quant"><b>Cuantitativo</b></div>
+      <div class="vc qual"><b>Cualitativo</b></div>
+      <div class="vcenter">Mixto</div>
+    </div>
+    <div class="vlegend">
+      <div><i class="swq"></i><span><b>Cuantitativo:</b> la medida, numérico (pH, caudal, rendimiento)</span></div>
+      <div><i class="swc"></i><span><b>Cualitativo:</b> el sentido, texto (entrevista, nota de terreno)</span></div>
+    </div>
+    <p class="kick">🔎 ¿Qué te dice el número que el contexto no ve, y qué ve el contexto que el número no?</p>
+  </section>
+
+  <!-- 9 · Las herramientas viven en la literatura -->
+  <section class="slide dark">
+    <p class="eyebrow">Elige con criterio · las herramientas de la literatura</p>
+    <h2 class="stitle serif">Herramientas para la literatura</h2>
+    <p class="lead" style="max-width:44em;">De todo el ciclo, estas herramientas cubren la fase de literatura. Los datos, el análisis y la escritura los lideras tú.</p>
+    <div class="steparrows cycle" style="margin-top:2.2vmin;">
+      <div class="sbox"><span class="sn">Descubrir</span><b>Connected Papers · Research Rabbit</b></div>
+      <div class="arrow">→</div>
+      <div class="sbox"><span class="sn">Revisar</span><b>Consensus · Elicit</b></div>
+      <div class="arrow">→</div>
+      <div class="sbox"><span class="sn">Leer a fondo</span><b>SciSpace</b></div>
+      <div class="arrow">→</div>
+      <div class="sbox"><span class="sn">Sintetizar</span><b>Gemini Notebook · un LLM (Claude, Gemini) · deep research</b></div>
+    </div>
+    <p class="free" style="margin-top:2.2vmin;">Las cinco de la Facultad, más un LLM como compañero de investigación (dialoga con tu corpus, hace barridos web).</p>
+    <p class="kick">🔎 ¿Qué otras herramientas usas tú en tu investigación?</p>
+  </section>
+
+  <!-- 11 · Las tres preguntas -->
+  <section class="slide dark">
+    <p class="eyebrow">El ritual que ya conocemos · aplicado a cada herramienta</p>
+    <h2 class="stitle serif" style="margin-bottom:1vmin;">Las tres preguntas</h2>
+    <div class="threeq">
+      <div class="q"><span class="qn">1.</span>¿Qué hace?</div>
+      <div class="q"><span class="qn">2.</span>¿Cuándo usarla, y cuándo no?</div>
+      <div class="q"><span class="qn">3.</span>¿Cómo la uso con cuidado?</div>
+    </div>
+    <div class="flow">
+      <div class="step"><span class="sn">1</span><b>Examinar</b></div>
+      <div class="step"><span class="sn">2</span><b>Decidir</b></div>
+      <div class="step"><span class="sn">3</span><b>Declarar</b></div>
+    </div>
+    <span class="arc">El novato pregunta qué herramienta usar. El erudito pregunta qué decisión está tomando.</span>
+  </section>
+
+
+  <!-- 11 · Q&A → Pausa -->
+  <section class="slide dark">
+    <p class="eyebrow">Respiramos</p>
+    <h2 class="stitle serif">Preguntas, y una pausa</h2>
+    <p class="lead">Antes del descanso: ¿qué preguntas, dudas o desacuerdos quedaron dando vueltas?</p>
+    <div class="twoup" style="margin-top:3.4vmin;">
+      <div class="box"><span class="k">Ahora</span><b>Preguntas y respuestas</b><span>Unos minutos para lo que quedó abierto.</span></div>
+      <div class="box"><span class="k">Y luego</span><b>Pausa · 15 minutos</b><span>Volvemos al taller: co-creamos la §2 de la guía.</span></div>
+    </div>
+  </section>
+
+  <!-- 14 · Al taller -->
+  <section class="slide dark">
+    <p class="eyebrow">De vuelta de la pausa · al taller</p>
+    <h2 class="stitle serif">Co-creamos la §2 de la guía</h2>
+    <p class="lead" style="max-width:40em;">Estamos en el Studio: unos 60 minutos, hasta el cierre. Trabajas un caso de uso situado en tu investigación, con la forma que tu trabajo necesite. No tiene que ser una revisión de literatura:</p>
+    <div class="cards" style="margin-top:2.6vmin;">
+      <div class="card"><b>Una figura o un mapa</b><span>Un diagrama, un mapa conceptual o una figura de tu problema.</span></div>
+      <div class="card"><b>Una red de conocimiento</b><span>Enlaza conceptos y fuentes en una web navegable.</span></div>
+      <div class="card"><b>Ampliar tu literatura</b><span>Descubre y organiza fuentes nuevas para tu marco.</span></div>
+    </div>
+    <p class="kick" style="text-align:center;">Abre la guía de campo · Sección 2 · Ejemplos.</p>
+  </section>
+
+  <!-- 24 · Una herramienta, tu investigación -->
+  <section class="slide dark">
+    <p class="eyebrow">Manos a la obra · la tarea de hoy</p>
+    <h2 class="stitle serif">Una herramienta,<br>tu investigación</h2>
+    <p class="lead" style="max-width:36em;">Corres las tres preguntas sobre una herramienta y la llevas a tu propio trabajo. Reúnes evidencia de cómo funciona, o de cómo falla: ambas cosas hacen un buen caso.</p>
+    <div class="callout">
+      <span class="k">La pregunta del studio</span>
+      <q>¿Vale la pena esta herramienta, y para qué?</q>
+      <span class="small">Al menos una evidencia: prompt y respuesta, captura, o antes/después. Datos cuidados: anonimizados, nada confidencial. Y la declaración al pie: qué aceptaste, qué modificaste, qué rechazaste, y por qué.</span>
+    </div>
+  </section>
+
+  <!-- 25 · Tu entrega -->
+  <section class="slide dark">
+    <p class="eyebrow">Tu entrega</p>
+    <h2 class="stitle serif">Guía · Ejemplos</h2>
+    <div class="deliv">
+      <div class="top"><b>Caso de uso · autoría individual</b><span class="pct">20%</span></div>
+      <div class="facts">
+        <span>unas <b>500</b> palabras</span><span>+ al menos una evidencia</span><span>Datos cuidados</span>
+        <span><b>Vence</b> antes de la Sesión 3</span><span><b>Revisión</b> hasta el cierre del curso</span>
+      </div>
+      <ul class="check">
+        <li>Una sola herramienta de la lista, aplicada a <b>tu</b> tesis, AFE o proyecto.</li>
+        <li>Contexto y procedimiento: qué prompts, qué aceptaste, modificaste y rechazaste.</li>
+        <li><b>Evaluación de métodos mixtos</b> (cuantitativo y cualitativo): el corazón del caso.</li>
+        <li>Reflexión crítica (costos, límites, qué harías distinto) + conexiones a la §1.</li>
+        <li>Tu declaración de IA al pie; revisaste los casos de <b>dos</b> pares.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 26 · Cierre -->
+  <section class="slide dark">
+    <p class="eyebrow">Antes de irnos</p>
+    <h2 class="stitle serif">El cierre</h2>
+    <div class="twoup">
+      <div class="box"><span class="k">Ahora, en clase</span><b>Reflexión semanal</b><span>Comparte tu reflexión de la semana.</span></div>
+      <div class="box"><span class="k">Qué viene</span><b>Sesión 3 · ¿Qué capacidades cultivamos?</b><span>Cultivamos capacidades humanas.</span></div>
+    </div>
+    <p class="closing">La herramienta correcta, en el momento correcto, por la razón correcta.</p>
+    <p style="margin-top:3vmin; font-size:clamp(20px,1.6vmin,20px); color:#b7c2cb; line-height:1.45;"><b style="color:#dbe2e7;">Declaración:</b> esta presentación se produjo con asistencia de IA (Claude Code). El contenido, las decisiones de diseño y la responsabilidad final son de Asa B. Stone.</p>
+  </section>
+
+</div>
+
+<div class="nav prev" id="prev" aria-label="Anterior"></div>
+<div class="nav next" id="next" aria-label="Siguiente"></div>
+
+<div class="hud"><span class="count" id="count">1 / 16</span></div>
+<div class="hint">← → avanzar · <b>F</b> pantalla completa</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total  = slides.length;
+  var i = 0;
+  var progress = document.getElementById('progress');
+  var count = document.getElementById('count');
+
+  function render(){
+    slides.forEach(function(s,n){ s.classList.toggle('active', n===i); });
+    progress.style.width = ((i+1)/total*100) + '%';
+    count.textContent = (i+1) + ' / ' + total;
+    if(location.hash !== '#'+(i+1)) history.replaceState(null,'','#'+(i+1));
+  }
+  function go(n){ i = Math.max(0, Math.min(total-1, n)); render(); }
+  function next(){ go(i+1); }
+  function prev(){ go(i-1); }
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+
+  document.addEventListener('keydown', function(e){
+    switch(e.key){
+      case 'ArrowRight': case ' ': case 'PageDown': next(); e.preventDefault(); break;
+      case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+      case 'Home': go(0); break;
+      case 'End': go(total-1); break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement){ document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen(); }
+        else { document.exitFullscreen&&document.exitFullscreen(); }
+        break;
+    }
+  });
+
+  var start = parseInt((location.hash||'').replace('#',''),10);
+  if(start>=1 && start<=total) i = start-1;
+  render();
+})();
+</script>
+</body>
+</html>
