@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deck · Sesión 3 · ¿Qué capacidades cultivamos?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,500;0,6..12,700;0,6..12,800;1,6..12,400&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#283A57">
+<style>
+:root{
+  --kami:#F1F2EF; --kumo:#FBFCFA; --suna:#DEDFD9; --sumi:#1A1B19; --hai:#4E524C;
+  --earth:#9C7A45; --earth-ink:#6B5330; --water:#2F7E9C; --water-ink:#255E73;
+  --fire:#DB5A2A; --fire-ink:#A8481C; --wind:#6B8E7F; --wind-ink:#3f6154; --void:#283A57;
+  --sky:#9fd0e0;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{
+  background:var(--void); color:var(--sumi);
+  font-family:'Nunito Sans',system-ui,sans-serif; font-weight:400;
+  -webkit-font-smoothing:antialiased; overflow:hidden;
+}
+.serif{font-family:'Cormorant Garamond',Georgia,serif;}
+
+/* ---------- deck mechanics ---------- */
+.deck{position:fixed; inset:0;}
+.slide{
+  position:absolute; inset:0;
+  display:none; flex-direction:column; justify-content:center;
+  padding:6.5vmin 8.5vmin; background:var(--void); color:var(--kumo);
+}
+.slide.active{display:flex; animation:fade .35s ease;}
+@keyframes fade{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+@media(prefers-reduced-motion:reduce){.slide.active{animation:none;}}
+.slide.dark{background:var(--void); color:var(--kumo);}
+
+/* shared type · mínimo legible elevado para proyección */
+.eyebrow{font-weight:600; text-transform:uppercase; letter-spacing:.24em;
+  font-size:clamp(20px,1.8vmin,21px); color:var(--sky); margin:0 0 3vmin;}
+.stitle{font-weight:300; letter-spacing:-.01em; line-height:1.05;
+  font-size:clamp(34px,7.6vmin,84px); color:#fff;}
+.lead{font-size:clamp(21px,3vmin,33px); line-height:1.48; color:#dbe2e7; margin-top:2.6vmin; max-width:27em;}
+.kick{font-size:clamp(20px,2.4vmin,25px); color:var(--sky); font-weight:700; margin-top:3.4vmin; max-width:36em;}
+
+/* énfasis sobre el fondo cielo */
+.lead b, .slide p b{color:#fff !important;}
+.lead em{color:#fff !important;}
+p[style*='--hai']{color:#dbe2e7 !important;}
+
+/* portada */
+.cover .meta{margin-top:4.4vmin; font-size:clamp(20px,2.2vmin,23px); color:#dbe2e7;}
+.cover .meta b{color:#fff; font-weight:700;}
+.cover .rule{height:4px; width:min(18vmin,150px); background:var(--sky); border-radius:4px; margin:4.4vmin 0 0;}
+.cover .tagline{font-family:'Cormorant Garamond',Georgia,serif; font-style:italic; font-weight:300;
+  font-size:clamp(22px,3.8vmin,42px); line-height:1.22; color:var(--sky); margin-top:3vmin; max-width:24em;}
+.subline{margin-top:1.6vmin; font-size:clamp(20px,2.2vmin,23px); color:var(--sky);}
+
+/* bullets */
+ul.blist{list-style:none; margin-top:2.4vmin;}
+ul.blist li{position:relative; padding-left:3.4vmin; margin-bottom:1.5vmin;
+  font-size:clamp(21px,2.7vmin,29px); line-height:1.38; color:#e4e8ea;}
+ul.blist li::before{content:""; position:absolute; left:0; top:.55em;
+  width:1.1vmin; height:1.1vmin; min-width:9px; min-height:9px; background:var(--sky); border-radius:50%;}
+ul.blist li b{color:#fff;}
+
+/* secciones (tarjetas claras) */
+.rev{display:flex; flex-direction:column; gap:1.8vmin; margin-top:3.4vmin;}
+.rev .sec{background:var(--kumo); border:1px solid var(--suna); border-left:6px solid var(--water);
+  border-radius:11px; padding:2.6vmin 3.2vmin;}
+.rev .sec .id{font-weight:700; color:var(--water-ink); font-size:clamp(20px,1.8vmin,20px); letter-spacing:.05em;}
+.rev .sec b{display:block; color:var(--void); font-size:clamp(20px,2.6vmin,27px); font-weight:700; margin:.4vmin 0;}
+.rev .sec span{color:var(--hai); font-size:clamp(20px,2.15vmin,24px);}
+.rev.tight{gap:1.3vmin; margin-top:3vmin;}
+.rev.tight .sec{padding:1.9vmin 3vmin; display:flex; align-items:baseline; gap:2.2vmin; flex-wrap:wrap;}
+.rev.tight .sec .id{min-width:7em; color:var(--water); flex-shrink:0;}
+.rev.tight .sec b{display:inline; margin:0; font-size:clamp(20px,2.4vmin,26px);}
+
+/* grids de tarjetas */
+.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:2vmin; margin-top:3.4vmin;}
+.card{background:var(--kumo); border:1px solid var(--suna); border-top:4px solid var(--water);
+  border-radius:11px; padding:2.8vmin 2.8vmin; display:flex; flex-direction:column; gap:.9vmin;}
+.card .n{font-weight:800; color:var(--water); font-size:clamp(20px,2vmin,21px); font-variant-numeric:tabular-nums;}
+.card b{color:var(--void); font-size:clamp(20px,2.5vmin,28px); font-weight:700; line-height:1.15;}
+.card span{color:var(--hai); font-size:clamp(20px,2.15vmin,24px); line-height:1.4;}
+.card.lv-no{border-top-color:var(--earth);} .card.lv-no .n{color:var(--earth-ink);}
+.card.lv-si{border-top-color:var(--water);} .card.lv-si .n{color:var(--water-ink);}
+.card.lv-mas{border-top-color:var(--wind);} .card.lv-mas .n{color:var(--wind-ink);}
+.card.s{border-top-color:var(--wind);} .card.s .n{color:var(--wind-ink);}
+.card.e{border-top-color:var(--earth);} .card.e .n{color:var(--earth-ink);}
+.card.t{border-top-color:var(--water);} .card.t .n{color:var(--water-ink);}
+
+/* Venn SETS · tres círculos superpuestos, con leyenda fuera */
+.venn{position:relative; --s:min(28vmin,232px); width:calc(var(--s)*1.55); height:calc(var(--s)*1.5); margin:3vmin auto 0;}
+.venn .vc{position:absolute; width:var(--s); height:var(--s); border-radius:50%; border:2px solid;
+  display:flex; align-items:center; justify-content:center; text-align:center;}
+.venn .vc b{font-weight:800; color:#fff; font-size:clamp(20px,2.6vmin,28px); line-height:1.03;}
+.venn .social{top:0; left:50%; margin-left:calc(var(--s)*-0.5); background:rgba(107,142,127,.42); border-color:#9cc0b2;
+  align-items:flex-start; padding-top:2.6vmin;}
+.venn .eco{bottom:0; left:0; background:rgba(156,122,69,.42); border-color:#d3b483;
+  justify-content:flex-start; padding-left:2vmin;}
+.venn .tec{bottom:0; right:0; background:rgba(47,126,156,.44); border-color:#7fc0d8;
+  justify-content:flex-end; padding-right:2vmin;}
+.venn .vcenter{position:absolute; left:50%; top:54%; transform:translate(-50%,-50%); z-index:2;
+  color:#fff; font-weight:800; text-align:center; font-size:clamp(20px,2.5vmin,27px);
+  letter-spacing:.05em; text-shadow:0 1px 7px rgba(0,0,0,.6);}
+.vlegend{display:flex; justify-content:center; gap:1.6vmin 4vmin; margin-top:2.8vmin; flex-wrap:wrap;}
+.vlegend div{display:flex; align-items:center; gap:1.2vmin; color:#dbe2e7; font-size:clamp(20px,2.15vmin,24px);}
+.vlegend i{width:1.5vmin; height:1.5vmin; min-width:14px; min-height:14px; border-radius:50%; display:inline-block; flex-shrink:0;}
+.vlegend b{color:#fff; font-weight:800;}
+.vlegend .sws{background:#6B8E7F;} .vlegend .swe{background:#9C7A45;} .vlegend .swt{background:#2F7E9C;}
+
+/* Venn 2 círculos · métodos mixtos */
+.venn2{position:relative; --s:min(31vmin,258px); width:calc(var(--s)*1.76); height:var(--s); margin:3vmin auto 0;}
+.venn2 .vc{position:absolute; top:0; width:var(--s); height:var(--s); border-radius:50%; border:2px solid; display:flex; align-items:center;}
+.venn2 .vc b{font-weight:800; color:#fff; font-size:clamp(19px,2.2vmin,24px); line-height:1.03;}
+.venn2 .quant{left:0; background:rgba(47,126,156,.42); border-color:#7fc0d8; justify-content:flex-start; padding-left:3.4vmin;}
+.venn2 .qual{right:0; background:rgba(219,90,42,.34); border-color:#e69a7a; justify-content:flex-end; padding-right:3.4vmin;}
+.venn2 .vcenter{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:2;
+  color:#fff; font-weight:800; text-align:center; font-size:clamp(20px,2.5vmin,27px);
+  letter-spacing:.05em; text-shadow:0 1px 7px rgba(0,0,0,.6);}
+.vlegend .swq{background:#2F7E9C;} .vlegend .swc{background:#DB5A2A;}
+
+/* Triángulo fuzzy SETS */
+.tri{position:relative; width:min(50vmin,420px); margin:2.2vmin auto 0; padding:3.2vmin 0 3.4vmin;}
+.tri svg{width:100%; height:auto; display:block; overflow:visible;}
+.tri .tl{position:absolute; font-weight:800; color:#fff; font-size:clamp(20px,2.4vmin,27px); white-space:nowrap;}
+.tri .tl-s{top:0; left:50%; transform:translateX(-50%);}
+.tri .tl-e{bottom:0; left:0;}
+.tri .tl-t{bottom:0; right:0;}
+.trinote{margin-top:1.8vmin; text-align:center; color:#dbe2e7; font-size:clamp(20px,2.1vmin,23px); line-height:1.4;}
+.trinote b{color:#fff;}
+
+/* burbujas de diálogo · voces de estudiantes */
+.bubbles{display:flex; gap:2.4vmin; margin-top:3.4vmin; flex-wrap:wrap; align-items:flex-start;}
+.bubble{flex:1; min-width:220px; position:relative; background:var(--kumo); border:1px solid var(--suna);
+  border-radius:18px; padding:2.6vmin 2.9vmin;}
+.bubble::after{content:""; position:absolute; bottom:-1.5vmin; left:3.2vmin; width:0; height:0;
+  border-left:1.5vmin solid transparent; border-right:1.5vmin solid transparent; border-top:1.7vmin solid var(--kumo);}
+.bubble b{display:block; color:var(--void); font-size:clamp(20px,2.5vmin,27px); font-weight:700; margin-bottom:.7vmin;}
+.bubble span{color:var(--hai); font-size:clamp(20px,2.1vmin,23px); line-height:1.4;}
+.bubble:nth-child(2){margin-top:2.6vmin;} .bubble:nth-child(3){margin-top:5.2vmin;}
+
+.costs{display:grid; grid-template-columns:repeat(2,1fr); gap:2vmin; margin-top:1vmin;}
+.cost{background:var(--kumo); border:1px solid var(--suna); border-left:5px solid var(--water);
+  border-radius:10px; padding:2.5vmin 3vmin;}
+.cost b{display:block; color:var(--void); font-size:clamp(20px,2.5vmin,27px); font-weight:700;}
+.cost span{color:var(--hai); font-size:clamp(20px,2.15vmin,24px); line-height:1.38;}
+.cost.open{border-left-color:var(--wind); border-style:dashed;}
+.cost.open span{color:var(--wind-ink);}
+.qline{font-family:'Cormorant Garamond',Georgia,serif; font-weight:400; color:#dbe2e7;
+  font-size:clamp(22px,3vmin,32px); line-height:1.25; margin-top:1.4vmin;}
+.cost .terms{list-style:none; margin-top:1.2vmin;}
+.cost .terms li{color:var(--void); font-weight:400; line-height:1.55; position:relative; padding-left:1.5em;
+  font-size:clamp(20px,2.2vmin,25px);}
+.cost .terms li::before{content:""; position:absolute; left:0; top:.62em; width:.42em; height:.42em;
+  background:var(--water); border-radius:2px;}
+.cost .dgm{width:100%; height:auto; display:block; margin:1.4vmin 0 1.2vmin;}
+.cost .when{color:var(--water); font-weight:800; font-size:clamp(20px,1.8vmin,20px); letter-spacing:.03em;}
+
+/* comparación */
+.compare{display:grid; grid-template-columns:1fr 1fr; gap:2.4vmin; margin-top:3vmin;}
+.compare .col{background:var(--kumo); border:1px solid var(--suna); border-radius:12px; padding:2.8vmin 3vmin; border-top:4px solid var(--water);}
+.compare .col.gen{border-top-color:var(--fire);}
+.compare .col.no{border-top-color:var(--earth);}
+.compare .col.si{border-top-color:var(--wind);}
+.compare .col h3{color:var(--void); font-size:clamp(20px,2.5vmin,26px); font-weight:800;}
+.compare .col .sub{display:block; color:var(--hai); font-size:clamp(20px,1.7vmin,20px); margin:.2vmin 0 1.4vmin;}
+.compare .col ul{list-style:none;}
+.compare .col li{color:var(--sumi); font-size:clamp(20px,2.05vmin,22px); line-height:1.48; margin-bottom:.3vmin;}
+.compare .col li b{color:var(--void); font-weight:700;}
+
+/* preguntas / capacidades / héroe */
+.threeq{display:flex; flex-direction:column; gap:2.4vmin; margin-top:3.4vmin;}
+.threeq .q{font-family:'Cormorant Garamond',Georgia,serif; font-weight:400;
+  font-size:clamp(26px,5vmin,58px); line-height:1.08; color:#fff; padding-left:5vmin; position:relative;}
+.threeq .q .qn{position:absolute; left:0; top:.05em; color:var(--sky); font-weight:500; font-size:.62em;}
+.split6{display:grid; grid-template-columns:1.1fr .9fr; gap:5vmin; align-items:center; margin-top:3vmin;}
+.split6 .threeq{margin-top:0; gap:2.2vmin;}
+.split6 .threeq .q{font-size:clamp(24px,3.6vmin,40px); padding-left:4.2vmin;}
+.split6 .tools{display:flex; flex-direction:column; gap:2.4vmin;}
+.hero{font-family:'Cormorant Garamond',Georgia,serif; font-weight:300; line-height:1;
+  font-size:clamp(52px,12vmin,140px); color:#fff; margin-top:2vmin;}
+.flow{display:flex; gap:2vmin; margin-top:4vmin; flex-wrap:wrap;}
+.flow .step{flex:1; min-width:150px; background:rgba(159,208,224,.12); border:1px solid rgba(159,208,224,.28);
+  border-radius:10px; padding:2.6vmin 2.2vmin; text-align:center;}
+.flow .step .sn{display:block; color:var(--sky); font-weight:800; font-size:clamp(20px,1.9vmin,20px); margin-bottom:.7vmin;}
+.flow .step b{color:#fff; font-size:clamp(20px,2.4vmin,26px); font-weight:700;}
+.flow .step span{display:block; color:#dbe2e7; font-size:clamp(20px,2vmin,22px); margin-top:.7vmin; line-height:1.34;}
+.flow.five{gap:1.5vmin; margin-top:3vmin;}
+.flow.five .step{min-width:118px; padding:2.2vmin 1.6vmin;}
+.flow.five .step b{font-size:clamp(20px,2.1vmin,23px);}
+.flow.five .step span{font-size:clamp(20px,1.85vmin,20px);}
+
+/* entrega */
+.deliv{background:var(--kumo); border:1px solid var(--suna); border-radius:13px; padding:3.2vmin 3.8vmin; margin-top:2vmin;}
+.deliv .top{display:flex; justify-content:space-between; align-items:baseline; gap:2vmin; flex-wrap:wrap;}
+.deliv .top b{color:var(--void); font-size:clamp(20px,3vmin,32px); font-weight:700;}
+.deliv .pct{color:var(--water); font-weight:800; font-size:clamp(22px,3.4vmin,38px);}
+.deliv .facts{display:flex; flex-wrap:wrap; gap:1vmin 3vmin; margin:2vmin 0 .4vmin;
+  font-size:clamp(20px,2vmin,21px); color:var(--hai);}
+.deliv .facts b{color:var(--sumi); font-weight:700;}
+ul.check{list-style:none; margin-top:1.6vmin;}
+ul.check li{position:relative; padding-left:3.4vmin; margin-bottom:1.4vmin;
+  font-size:clamp(20px,2.2vmin,25px); line-height:1.35; color:var(--sumi);}
+ul.check li::before{content:"\2610"; position:absolute; left:0; top:-.05em; color:var(--water); font-size:1.15em;}
+ul.check li b{color:var(--void); font-weight:700;}
+
+/* callout */
+.callout{background:var(--kumo); border:1px solid var(--suna); border-left:6px solid var(--water);
+  border-radius:11px; padding:2.8vmin 3.4vmin; margin-top:3vmin;}
+.callout .k{display:block; text-transform:uppercase; letter-spacing:.2em; font-size:clamp(20px,1.5vmin,20px);
+  color:var(--water-ink); font-weight:700; margin-bottom:1.2vmin;}
+.callout q{font-style:italic; color:var(--void); font-size:clamp(20px,3vmin,32px); line-height:1.3; quotes:"«" "»";}
+.callout .small{display:block; margin-top:1.2vmin; color:var(--hai); font-size:clamp(20px,2vmin,22px);}
+.callout ul{list-style:none; margin-top:.6vmin;}
+.callout ul li{position:relative; padding-left:3vmin; margin-top:1vmin; color:var(--sumi);
+  font-size:clamp(20px,2.15vmin,23px); line-height:1.36;}
+.callout ul li::before{content:"\1F50E"; position:absolute; left:0; top:0; font-size:.9em;}
+.callout ul li b{color:var(--void); font-weight:700;}
+
+/* QR */
+.qrrow{display:flex; align-items:center; gap:3vmin; margin-top:3vmin; flex-wrap:wrap;}
+.qr{background:#fff; border-radius:12px; padding:1.4%; display:block;}
+.qrrow .qr{width:min(20vmin,160px);}
+.qrrow .qrtext b{display:block; color:#fff; font-size:clamp(20px,2.7vmin,28px); font-weight:700;}
+.qrrow .qrtext span{display:block; margin-top:.6vmin; color:#dbe2e7; font-size:clamp(20px,2.1vmin,22px); max-width:20em; line-height:1.4;}
+
+/* cierre two-up */
+.twoup{display:grid; grid-template-columns:1fr 1fr; gap:2.4vmin; margin-top:3.4vmin;}
+.twoup .box{background:rgba(159,208,224,.1); border:1px solid rgba(159,208,224,.26); border-radius:12px; padding:3vmin;}
+.twoup .box .k{color:var(--sky); text-transform:uppercase; letter-spacing:.2em; font-size:clamp(20px,1.5vmin,20px); font-weight:700;}
+.twoup .box b{display:block; color:#fff; font-size:clamp(20px,2.7vmin,30px); font-weight:700; margin:1.1vmin 0 .6vmin; line-height:1.15;}
+.twoup .box span{color:#dbe2e7; font-size:clamp(20px,2.1vmin,24px);}
+.twoup .box .qr{width:min(18vmin,140px); margin-top:1.8vmin;}
+
+/* pasos horizontales con flechas */
+.steparrows{display:flex; align-items:stretch; gap:1.4vmin; margin-top:2.6vmin; flex-wrap:wrap;}
+.steparrows .sbox{flex:1; min-width:180px; background:rgba(159,208,224,.12); border:1px solid rgba(159,208,224,.28);
+  border-radius:10px; padding:2.6vmin 2.2vmin; text-align:center; display:flex; flex-direction:column; gap:.6vmin; justify-content:center;}
+.steparrows .sbox .sn{color:var(--sky); font-weight:800; font-size:clamp(20px,1.9vmin,20px);}
+.steparrows .sbox b{color:#fff; font-size:clamp(20px,2.3vmin,25px); font-weight:700; line-height:1.18;}
+.steparrows .sbox span{color:#dbe2e7; font-size:clamp(20px,1.95vmin,21px); line-height:1.3;}
+.steparrows .arrow{display:flex; align-items:center; color:var(--sky); font-weight:700; font-size:clamp(26px,4vmin,44px);}
+.arrowdown{text-align:center; color:var(--sky); font-size:clamp(24px,3.4vmin,40px); line-height:1; margin:.6vmin 0;}
+.steparrows .sbox.loop{background:rgba(159,208,224,.07); border-style:dashed;}
+.steparrows .arrow.loopback{color:var(--sky);}
+.closing{margin-top:4vmin; font-family:'Cormorant Garamond',Georgia,serif; font-weight:300; font-style:italic;
+  font-size:clamp(22px,3.6vmin,40px); line-height:1.22; color:var(--sky);}
+
+/* nivel novato→erudito */
+.arc{display:inline-block; margin-top:2.6vmin; padding:1vmin 2.2vmin; border-radius:999px;
+  background:rgba(159,208,224,.14); border:1px solid rgba(159,208,224,.3);
+  color:var(--sky); font-weight:700; font-size:clamp(20px,1.9vmin,20px); letter-spacing:.02em;}
+.free{margin-top:2vmin; color:#9fb4c2; font-size:clamp(20px,1.8vmin,20px);}
+.free b{color:var(--sky);}
+
+/* ---------- HUD ---------- */
+.hud{position:fixed; left:0; right:0; bottom:0; z-index:40; display:flex; align-items:center;
+  gap:14px; padding:10px 18px; font-size:12px; color:#9aa7b5; pointer-events:none;}
+.hud .count{font-variant-numeric:tabular-nums; letter-spacing:.05em;}
+.progress{position:fixed; left:0; top:0; height:4px; background:var(--sky); width:0; z-index:41; transition:width .3s ease;}
+.hint{position:fixed; right:16px; bottom:12px; z-index:40; font-size:11px; color:#9aa7b5;
+  letter-spacing:.03em; opacity:.72;}
+.hint b{color:var(--sky); font-weight:700;}
+
+.nav{position:fixed; top:0; bottom:34px; width:22%; z-index:30; cursor:pointer; background:transparent;}
+.nav.prev{left:0;} .nav.next{right:0;}
+
+@media print{
+  @page{size:landscape; margin:14mm;}
+  body{background:#fff; color:var(--sumi); overflow:visible; height:auto;}
+  .deck{position:static;}
+  .hud,.progress,.hint,.nav{display:none !important;}
+  .slide{position:static; display:flex !important; min-height:auto; page-break-after:always;
+    background:var(--void) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    border-radius:10px; margin-bottom:8mm; padding:16mm;}
+}
+
+@media(max-width:760px){
+  .cards,.compare{grid-template-columns:1fr 1fr;} .costs,.twoup{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 · Portada (igual a las Sesiones 1 y 2) -->
+  <section class="slide dark cover">
+    <p class="eyebrow">Facultad de Ciencias Agronómicas · Universidad de Chile</p>
+    <h1 class="stitle serif">Inteligencia Artificial Responsable<br>para la Investigación</h1>
+    <p class="tagline">Haz de la IA una aliada de tu investigación,<br>con criterio y propósito.</p>
+    <div class="rule"></div>
+    <p class="meta"><b>Asa B. Stone, PhD</b> · Profesora visitante · Fulbright Scholar 2026–27</p>
+  </section>
+
+  <!-- 2 · Cosecha de la semana · check-in de persona entera (patrón S2) -->
+  <section class="slide dark">
+    <p class="eyebrow">Antes de avanzar · cosechamos lo de la semana</p>
+    <h2 class="stitle serif">Lo que trajiste</h2>
+    <p class="lead" style="margin-top:1.4vmin; max-width:38em;">Partimos escuchándonos. Cuéntanos, en breve:</p>
+    <ul class="blist">
+      <li>Cómo estuvo tu <b>fin de semana</b>. Partimos por ahí.</li>
+      <li>La <b>noticia, el evento o la acción sobre IA</b> que traías de tu semana.</li>
+      <li>Qué <b>exploraste</b> por tu cuenta: qué herramienta probaste, y qué pasó.</li>
+      <li>Cómo te fue con la <b>entrega</b>: qué salió fácil y dónde te trabaste.</li>
+    </ul>
+    <p class="kick">Y una pregunta antes de seguir: la semana pasada el tema eran las herramientas, y casi no las exploramos. ¿Se preguntaron por qué?</p>
+  </section>
+
+  <!-- 3 · Cómo aprendemos aquí (el porqué del método, en diagramas) -->
+  <section class="slide dark">
+    <p class="eyebrow">El punto medio · por qué me guardé la respuesta</p>
+    <h2 class="stitle serif">La incertidumbre fue a propósito</h2>
+    <p class="lead" style="max-width:47em;">Les di tres preguntas y me guardé mis respuestas:</p>
+    <p class="qline">¿Qué hace? · ¿Cuándo usarla, y cuándo no? · ¿Cómo la uso con cuidado?</p>
+    <p class="lead" style="max-width:60em; margin-top:1.4vmin;">Quería ver qué hacen ustedes con las suyas. El esfuerzo es parte de cómo se crece. El porqué:</p>
+    <div class="costs" style="grid-template-columns:repeat(3,1fr); margin-top:2.2vmin;">
+      <div class="cost"><b>a) El efecto de generación</b><svg class="dgm" viewBox="0 0 240 140" role="img" aria-label="Dos rutas: lo que te dan deja poca huella, lo que generas tú deja mucha">
+          <defs>
+            <marker id="ag1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="rgba(78,82,76,.5)"/></marker>
+            <marker id="ag2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2F7E9C"/></marker>
+          </defs>
+          <text x="152" y="24" font-size="9.5" font-weight="700" fill="#4E524C" font-family="Nunito, sans-serif">lo que queda</text>
+          <path d="M142,32 L142,120" stroke="rgba(78,82,76,.25)" stroke-width="1.2" stroke-dasharray="4 4"/>
+          <text x="16" y="59" font-size="11.5" font-weight="700" fill="#4E524C" font-family="Nunito, sans-serif">Te la dan</text>
+          <path d="M84,55 L132,55" fill="none" stroke="rgba(78,82,76,.45)" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ag1)"/>
+          <rect x="152" y="46" width="28" height="18" rx="4" fill="rgba(78,82,76,.3)"/>
+          <text x="16" y="104" font-size="11.5" font-weight="800" fill="#255E73" font-family="Nunito, sans-serif">La generas tú</text>
+          <path d="M108,100 L132,100" fill="none" stroke="#2F7E9C" stroke-width="2.4" marker-end="url(#ag2)"/>
+          <rect x="152" y="86" width="74" height="28" rx="5" fill="#2F7E9C"/>
+        </svg><span>Lo que produces tú se sostiene mejor que lo que recibes hecho. Por eso las preguntas, y no el veredicto.</span></div>
+      <div class="cost"><b>b) Neuroplasticidad</b><svg class="dgm" viewBox="0 0 240 140" role="img" aria-label="Una red rala que se vuelve densa con el esfuerzo y el error">
+          <defs><marker id="an" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#2F7E9C"/></marker></defs>
+          <g stroke="rgba(78,82,76,.38)" stroke-width="1.2" fill="none">
+            <path d="M52,34 L28,52"/><path d="M28,52 L38,81"/><path d="M76,54 L68,82"/>
+          </g>
+          <g fill="rgba(78,82,76,.55)"><circle cx="52" cy="34" r="4.5"/><circle cx="28" cy="52" r="4.5"/><circle cx="76" cy="54" r="4.5"/><circle cx="38" cy="81" r="4.5"/><circle cx="68" cy="82" r="4.5"/></g>
+          <g stroke="#2F7E9C" stroke-width="2" fill="none">
+            <path d="M188,34 L164,52"/><path d="M188,34 L212,54"/><path d="M164,52 L212,54"/><path d="M164,52 L174,81"/>
+            <path d="M212,54 L204,82"/><path d="M174,81 L204,82"/><path d="M188,34 L204,82"/><path d="M164,52 L204,82"/>
+          </g>
+          <g fill="#2F7E9C"><circle cx="188" cy="34" r="4.5"/><circle cx="164" cy="52" r="4.5"/><circle cx="212" cy="54" r="4.5"/><circle cx="174" cy="81" r="4.5"/><circle cx="204" cy="82" r="4.5"/></g>
+          <path d="M92,60 L148,60" fill="none" stroke="#2F7E9C" stroke-width="2.2" marker-end="url(#an)"/>
+          <g font-family="Nunito, sans-serif" font-weight="800" text-anchor="middle">
+            <text x="120" y="47" font-size="9.5" fill="#4E524C">esfuerzo y error</text>
+            <text x="52" y="112" font-size="10.5" fill="#4E524C">antes</text>
+            <text x="188" y="112" font-size="10.5" fill="#255E73">después</text>
+          </g>
+        </svg><span>El cerebro cambia con la práctica esforzada y con el error. La incomodidad es el mecanismo.</span></div>
+      <div class="cost"><b>c) Metacognición</b><svg class="dgm" viewBox="0 0 240 140" role="img" aria-label="Ciclo metacognitivo: qué sé, cómo voy, qué ajusto">
+          <defs><marker id="am" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#2F7E9C"/></marker></defs>
+          <g fill="rgba(47,126,156,.13)" stroke="#2F7E9C" stroke-width="1.8">
+            <rect x="24" y="12" width="164" height="28" rx="6"/>
+            <rect x="24" y="56" width="164" height="28" rx="6"/>
+            <rect x="24" y="100" width="164" height="28" rx="6"/>
+          </g>
+          <g fill="none" stroke="#2F7E9C" stroke-width="2.2" marker-end="url(#am)">
+            <path d="M106,42 L106,53"/>
+            <path d="M106,86 L106,97"/>
+            <path d="M188,114 C218,114 218,26 190,26"/>
+          </g>
+          <g font-family="Nunito, sans-serif" font-size="11.5" font-weight="800" fill="#283A57" text-anchor="middle">
+            <text x="106" y="31">¿Qué sé?</text><text x="106" y="75">¿Cómo voy?</text><text x="106" y="119">¿Qué ajusto?</text>
+          </g>
+        </svg><span>Y te das cuenta de cómo estás aprendiendo, para poder dirigirlo tú.</span></div>
+    </div>
+    <p class="kick">Entonces: ¿los llevó su curiosidad a alguna parte?</p>
+  </section>
+
+  <!-- 4 · La agenda de hoy (misma forma que la Sesión 2) -->
+  <section class="slide dark">
+    <p class="eyebrow">Sesión 3 de 4 · Hoy · Sala Depto. Ingesu</p>
+    <h2 class="stitle serif">La agenda de hoy</h2>
+    <div class="rev tight">
+      <div class="sec"><span class="id">14:00 · 30 min</span><b>Repaso: cosechamos la semana y cerramos las entregas</b></div>
+      <div class="sec"><span class="id">14:30 · 15 min</span><b>Apertura: cómo aprendemos y el norte de hoy</b></div>
+      <div class="sec"><span class="id">14:45 · 60 min</span><b>Fundamentos: las herramientas a fondo y las cinco capacidades</b></div>
+      <div class="sec"><span class="id">15:45 · 15 min</span><b>Pausa</b></div>
+      <div class="sec"><span class="id">16:00 · 60 min</span><b>Studio: la guía y tu portafolio en GitHub</b></div>
+      <div class="sec"><span class="id">17:00 · 15 min</span><b>Cierre: reflexionamos y miramos lo que viene</b></div>
+    </div>
+  </section>
+
+  <!-- 5 · El norte de hoy + dónde estamos en el arco -->
+  <section class="slide dark">
+    <p class="eyebrow">Dónde estamos en el arco · el norte de hoy</p>
+    <h2 class="stitle serif">Hoy vamos a</h2>
+    <ul class="blist" style="margin-top:1.2vmin;">
+      <li>Explorar las <b>herramientas de IA</b> más a fondo.</li>
+      <li>Describir las <b>cinco capacidades</b> humanas fundamentales.</li>
+      <li>Discutir su importancia en la <b>era de la IA</b>.</li>
+      <li>Articular cómo tu <b>ética situada</b> guía tu uso de la IA.</li>
+      <li>Elaborar tu <b>portafolio</b> profesional en GitHub.</li>
+    </ul>
+    <div class="costs" style="grid-template-columns:repeat(3,1fr); margin-top:2.6vmin;">
+      <div class="cost" style="opacity:.45;"><span class="when">Sesión 1</span><b>¿Por qué la IA responsable?</b></div>
+      <div class="cost" style="opacity:.45;"><span class="when">Sesión 2</span><b>¿Cómo investigamos con IA?</b></div>
+      <div class="cost" style="border-left:8px solid var(--sky); box-shadow:0 8px 26px rgba(0,0,0,.3);"><span class="when" style="color:var(--water-ink);">Sesión 3 · hoy</span><b>¿Qué capacidades cultivamos?</b></div>
+    </div>
+  </section>
+
+  <!-- 6 · El criterio, en vivo · dos herramientas a fondo -->
+  <section class="slide dark">
+    <p class="eyebrow">En vivo · tres herramientas, a fondo</p>
+    <h2 class="stitle serif">El criterio, en vivo</h2>
+    <p class="lead" style="max-width:46em;">Abrimos tres herramientas y las miramos por dentro. Les muestro cómo lo decido yo; si vale la pena, y para qué, lo deciden ustedes.</p>
+    <div class="split6">
+      <div class="threeq">
+        <div class="q"><span class="qn">1.</span>¿Qué hace?</div>
+        <div class="q"><span class="qn">2.</span>¿Cuándo usarla, y cuándo no?</div>
+        <div class="q"><span class="qn">3.</span>¿Cómo la uso con cuidado?</div>
+      </div>
+      <div class="tools">
+        <div class="cost"><b>SciSpace</b></div>
+        <div class="cost"><b>Consensus</b></div>
+        <div class="cost"><b>Research Rabbit</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · Un respiro · preguntas y comentarios -->
+  <section class="slide dark">
+    <p class="eyebrow">Un respiro</p>
+    <h2 class="stitle serif">¿Preguntas? ¿Comentarios?</h2>
+    <p class="lead" style="max-width:40em;">Antes de pasar a las capacidades: ¿qué quedó dando vueltas de lo que acabamos de ver?</p>
+  </section>
+
+  <!-- 8 · Cinco capacidades (overview) -->
+  <section class="slide dark">
+    <p class="eyebrow">Capacidades humanas</p>
+    <h2 class="stitle serif">Cinco capacidades humanas</h2>
+    <p class="lead" style="max-width:48em;">A medida que la IA absorbe la ejecución técnica, el valor se concentra en el juicio humano que la rodea.</p>
+    <div class="cards">
+      <div class="card"><span class="n">01</span><b>Juicio crítico</b><span>Decidir con criterio, no por defecto.</span></div>
+      <div class="card"><span class="n">02</span><b>Pensamiento sistémico</b><span>Ver cómo se conecta todo.</span></div>
+      <div class="card"><span class="n">03</span><b>Comunicación efectiva</b><span>Hacerte entender y escuchar.</span></div>
+      <div class="card"><span class="n">04</span><b>Adaptabilidad</b><span>Moverte cuando el terreno cambia.</span></div>
+      <div class="card"><span class="n">05</span><b>Liderazgo y colaboración</b><span>Mover a un grupo, no solo a ti.</span></div>
+    </div>
+  </section>
+
+  <!-- 9 · Juicio crítico -->
+  <section class="slide dark">
+    <p class="eyebrow">Capacidad 1 de 5</p>
+    <h2 class="stitle serif">Juicio crítico</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:40em;"><b>Definición.</b> Evaluar afirmaciones, fuentes y opciones, y decidir con fundamento en vez de aceptar lo primero que aparece. Distinguir lo que sabes de lo que infieres.</p>
+    <div class="costs" style="margin-top:2.4vmin;">
+      <div class="cost"><b>Un ejemplo</b><span>Antes de citar un resultado, rastreas la fuente y compruebas si de verdad dice lo que crees que dice.</span></div>
+      <div class="cost"><b>Relevancia con IA</b><ul class="terms"><li>Adulación</li><li>Alucinación</li><li>Heurística de fluidez</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 10 · Pensamiento sistémico -->
+  <section class="slide dark">
+    <p class="eyebrow">Capacidad 2 de 5</p>
+    <h2 class="stitle serif">Pensamiento sistémico</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:40em;"><b>Definición.</b> Ver las partes y sus relaciones: cómo una decisión técnica toca lo social, lo ecológico y lo económico a la vez.</p>
+    <div class="costs" style="margin-top:2.4vmin;">
+      <div class="cost"><b>Un ejemplo</b><span>Al evaluar una herramienta de riego, piensas también en quién queda fuera, qué datos usa y a quién benefician sus recomendaciones.</span></div>
+      <div class="cost"><b>Relevancia con IA</b><ul class="terms"><li>Mirada SETS</li><li>Efecto dominó</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 11 · Comunicación efectiva -->
+  <section class="slide dark">
+    <p class="eyebrow">Capacidad 3 de 5</p>
+    <h2 class="stitle serif">Comunicación efectiva</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:40em;"><b>Definición.</b> Transmitir ideas complejas con claridad a audiencias distintas, y escuchar de verdad. Traducir entre lo técnico y lo humano.</p>
+    <div class="costs" style="margin-top:2.4vmin;">
+      <div class="cost"><b>Un ejemplo</b><span>Explicar tu investigación a un productor y a un panel académico, cada uno en su lenguaje, sin perder el rigor.</span></div>
+      <div class="cost"><b>Relevancia con IA</b><ul class="terms"><li>Propósito</li><li>Audiencia</li><li>Atribución</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 12 · Adaptabilidad -->
+  <section class="slide dark">
+    <p class="eyebrow">Capacidad 4 de 5</p>
+    <h2 class="stitle serif">Adaptabilidad</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:40em;"><b>Definición.</b> Revisar enfoque, técnica y criterio a medida que evolucionan las herramientas, las tareas y los contextos; y experimentar, construir y originar el conocimiento y la obra creativa que solo los humanos pueden producir.</p>
+    <div class="costs" style="margin-top:2.4vmin;">
+      <div class="cost"><b>Un ejemplo</b><span>El pronóstico cambia a mitad de temporada, rehaces el método, y de ese ajuste sale una forma de mirar tus datos que antes no existía.</span></div>
+      <div class="cost"><b>Relevancia con IA</b><ul class="terms"><li>Upskilling</li><li>Originar lo nuevo</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 13 · Liderazgo y colaboración -->
+  <section class="slide dark">
+    <p class="eyebrow">Capacidad 5 de 5</p>
+    <h2 class="stitle serif">Liderazgo y colaboración</h2>
+    <p class="lead" style="margin-top:2vmin; max-width:40em;"><b>Definición.</b> Coordinar personas hacia un fin compartido, distribuir la agencia y sostener la confianza. Liderar con, no sobre.</p>
+    <div class="costs" style="margin-top:2.4vmin;">
+      <div class="cost"><b>Un ejemplo</b><span>Facilitar que un gremio co-analice sus propios datos, en vez de entregarle una respuesta cerrada.</span></div>
+      <div class="cost"><b>Relevancia con IA</b><ul class="terms"><li>Humano en el circuito</li><li>Humano al mando</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 14 · Pausa -->
+  <section class="slide dark">
+    <p class="eyebrow">Respiramos</p>
+    <h2 class="stitle serif">Preguntas, y una pausa</h2>
+    <p class="lead">Antes del descanso: ¿qué preguntas, dudas o desacuerdos quedaron dando vueltas?</p>
+    <div class="twoup">
+      <div class="box"><span class="k">Ahora</span><b>Preguntas y respuestas</b><span>Unos minutos para lo que quedó abierto.</span></div>
+      <div class="box"><span class="k">Y luego</span><b>Pausa · 15 minutos</b><span>Llévate esta pregunta al café: ¿cuáles son los desafíos éticos de tu campo?</span></div>
+    </div>
+  </section>
+
+  <!-- 15 · Tu ética situada · de vuelta de la pausa, con andamiaje -->
+  <section class="slide dark">
+    <p class="eyebrow">De vuelta de la pausa · dónde te paras</p>
+    <h2 class="stitle serif">Tu ética situada</h2>
+    <div class="callout" style="margin-top:2.2vmin;">
+      <span class="k">La pregunta</span>
+      <q>¿Cuáles son los desafíos éticos de mi campo, y dónde me paro?</q>
+      <span class="small">Para partir, completa esta frase: «En mi campo, me preocupa que…»</span>
+    </div>
+    <p class="kick">Esa frase es la semilla de tu aporte a la Sección 3 de la guía.</p>
+  </section>
+
+  <!-- 16 · El studio de hoy · la guía y el portafolio -->
+  <section class="slide dark">
+    <p class="eyebrow">Manos a la obra · el studio de hoy</p>
+    <h2 class="stitle serif">La guía y tu portafolio</h2>
+    <p class="lead" style="max-width:47em;">Dos frentes. Es la <b>última semana para editar la guía</b>: cierra con el curso, el 8 de septiembre.</p>
+    <div class="twoup" style="margin-top:2.4vmin;">
+      <div class="box"><span class="k">La guía de campo · colectiva</span><b>Sección 3 · El compromiso humano</b><b>Secciones 1 y 2 · última pasada</b></div>
+      <div class="box"><span class="k">Tu portafolio · individual</span><b>Una página en GitHub Pages</b><b>Las capacidades se demuestran</b></div>
+    </div>
+    <p class="kick">Se demuestran en cómo aportas: el juicio con que editas, cómo explicas tu caso, cómo trabajas con quien te revisa.</p>
+  </section>
+
+  <!-- 17 · GitHub Pages, en vivo (demo 3) -->
+  <section class="slide dark">
+    <p class="eyebrow">En vivo · de un archivo a una página publicada</p>
+    <h2 class="stitle serif">GitHub Pages, en vivo</h2>
+    <p class="lead" style="max-width:42em;">Miren el camino completo una vez, con calma. Después lo recorren ustedes en el studio, y yo ando pasando por los puestos.</p>
+    <div class="flow">
+      <div class="step"><span class="sn">1</span><b>Un repositorio</b></div>
+      <div class="step"><span class="sn">2</span><b>Sube tu index.html</b></div>
+      <div class="step"><span class="sn">3</span><b>Settings → Pages</b></div>
+      <div class="step"><span class="sn">4</span><b>Tu enlace, en vivo</b></div>
+    </div>
+  </section>
+
+  <!-- 18 · Tu entrega -->
+  <section class="slide dark">
+    <p class="eyebrow">Tu entrega</p>
+    <h2 class="stitle serif">Portafolio GitHub</h2>
+    <div class="deliv">
+      <div class="top"><b>Individual · te sobrevive al curso</b><span class="pct">20%</span></div>
+      <div class="facts">
+        <span>Un <b style="display:inline;">index.html</b> en GitHub Pages</span><span>Mínimo: el enlace</span>
+      </div>
+      <ul class="check">
+        <li>Un index.html publicado con GitHub Pages (o apunta a tu sitio propio).</li>
+        <li>Quién soy · Mi trabajo. Las capacidades se ven en cómo lo cuentas.</li>
+        <li>Lo asistido por IA, curado y atribuido.</li>
+        <li>Vence antes de la clase del mar 8 sep · revisión hasta el cierre del curso · nota mínima 4,0.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 19 · Cierre -->
+  <section class="slide dark">
+    <p class="eyebrow">Antes de irnos</p>
+    <h2 class="stitle serif">El cierre</h2>
+    <div class="twoup">
+      <div class="box"><span class="k">Ahora, en clase</span><b>Reflexión semanal</b><span>2,5% · toma dos minutos.</span><img class="qr" src="qr-reflexion.png" alt="Código QR a la reflexión semanal"></div>
+      <div class="box"><span class="k">Qué viene · Sesión 4 · martes 8 de septiembre</span><b>¿Hacia dónde vamos?</b><span>Finalizamos la guía de campo · presentas «IA Responsable y yo» · celebramos el cierre del curso.</span></div>
+    </div>
+    <p class="closing">La IA asiste. Las capacidades humanas, las cultivas tú.</p>
+    <p style="margin-top:2.6vmin; font-size:clamp(20px,1.5vmin,20px); color:#9aa7b5; line-height:1.4;">Estas diapositivas se produjeron con asistencia de IA (Claude Code);<br>el contenido y la responsabilidad final son de Asa B. Stone.</p>
+  </section>
+</div>
+
+<div class="nav prev" id="prev" aria-label="Anterior"></div>
+<div class="nav next" id="next" aria-label="Siguiente"></div>
+
+<div class="hud"><span class="count" id="count">1 / 19</span></div>
+<div class="hint">← → avanzar · <b>F</b> pantalla completa</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total  = slides.length;
+  var i = 0;
+  var progress = document.getElementById('progress');
+  var count = document.getElementById('count');
+
+  function render(){
+    slides.forEach(function(s,n){ s.classList.toggle('active', n===i); });
+    progress.style.width = ((i+1)/total*100) + '%';
+    count.textContent = (i+1) + ' / ' + total;
+    if(location.hash !== '#'+(i+1)) history.replaceState(null,'','#'+(i+1));
+  }
+  function go(n){ i = Math.max(0, Math.min(total-1, n)); render(); }
+  function next(){ go(i+1); }
+  function prev(){ go(i-1); }
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+
+  document.addEventListener('keydown', function(e){
+    switch(e.key){
+      case 'ArrowRight': case ' ': case 'PageDown': next(); e.preventDefault(); break;
+      case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+      case 'Home': go(0); break;
+      case 'End': go(total-1); break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement){ document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen(); }
+        else { document.exitFullscreen&&document.exitFullscreen(); }
+        break;
+    }
+  });
+
+  var start = parseInt((location.hash||'').replace('#',''),10);
+  if(start>=1 && start<=total) i = start-1;
+  render();
+})();
+</script>
+</body>
+</html>
