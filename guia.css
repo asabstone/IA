@@ -1,0 +1,316 @@
+/* Guía de campo colectiva: capa propia, encima de styles.css.
+   No modifica ninguna de las cinco páginas del sitio.
+   Marca: Los Elementales · fondo kami · texto sumi · acento por sección. */
+
+/* ---------- portada ---------- */
+.gport{padding:30px 0 34px;}
+.gport .kicker{font-weight:600; text-transform:uppercase; letter-spacing:.2em; font-size:12px; color:var(--water-ink); margin:0 0 14px;}
+.gport h1{font-family:'Cormorant Garamond',Georgia,serif; font-weight:500; font-size:52px; line-height:1.04; color:var(--void); margin:0 0 10px; letter-spacing:-.015em;}
+.gport .sub{font-family:'Cormorant Garamond',Georgia,serif; font-weight:300; font-size:30px; line-height:1.15; color:var(--void); margin:0 0 18px;}
+.gport .lede{font-size:19px; color:var(--hai); max-width:34em; margin:0;}
+.gport .facts{margin-top:24px;}
+
+/* ---------- hueco visible: lo que la cohorte todavía debe decidir ---------- */
+.hueco{display:inline-block; background:#FDF6E7; border:1px dashed var(--earth); border-radius:6px;
+  padding:2px 10px; color:var(--earth-ink); font-family:'Nunito Sans',system-ui,sans-serif;
+  font-size:.55em; font-weight:600; letter-spacing:.02em; vertical-align:middle;}
+.huecobloc{background:#FDF6E7; border:1px dashed var(--earth); border-radius:9px; padding:18px 22px; margin:16px 0;
+  font-size:15.5px; color:var(--earth-ink);}
+.huecobloc b{color:var(--earth-ink);}
+
+/* ---------- las tres preguntas: la entrada de una pantalla ---------- */
+.tres{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:22px 0 10px; padding:0; list-style:none;}
+.tres li{background:var(--kumo); border:1px solid var(--suna); border-top:3px solid var(--el,var(--water));
+  border-radius:9px; padding:18px 18px 16px; margin:0;}
+.tres li::before{display:none;}
+.tres .qn{font-weight:700; font-size:13px; letter-spacing:.06em; color:var(--el-ink,var(--water-ink)); text-transform:uppercase;}
+.tres .qq{display:block; font-family:'Cormorant Garamond',Georgia,serif; font-size:23px; line-height:1.18;
+  color:var(--void); margin:6px 0 8px;}
+.tres .qa{display:block; font-size:14.5px; color:var(--hai);}
+.tres a{text-decoration:none; font-weight:600; font-size:13.5px;}
+
+/* ---------- tarjeta: la unidad que se repite en toda la guía ----------
+   Una sola columna. A la izquierda el nombre y la idea grande;
+   a la derecha el texto granular. En pantalla angosta se apilan. */
+.mazo{display:block; margin:20px 0 10px;}
+.tarjeta{background:var(--kumo); border:1px solid var(--suna); border-left:4px solid var(--el,var(--water));
+  border-radius:9px; padding:24px 26px; margin:0 0 14px;
+  display:grid; grid-template-columns:minmax(200px,.85fr) 1.6fr; gap:10px 34px; align-items:start;}
+.tarjeta .izq > h3{margin:0; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.12em;
+  color:var(--el-ink,var(--water-ink));}
+.tarjeta .pull{font-family:'Cormorant Garamond',Georgia,serif; font-size:25px; line-height:1.2; font-weight:400;
+  color:var(--void); margin:9px 0 0;}
+.tarjeta .cuerpo{font-size:15.5px; margin:0;}
+.tarjeta .cuerpo p{margin:0 0 10px;} .tarjeta .cuerpo p:last-child{margin-bottom:0;}
+.pend{color:var(--earth-ink); font-style:italic;}
+
+/* ---------- etiqueta de tarea, arriba de cada caso ---------- */
+.tarea{display:inline-block; background:var(--kumo); border:1px solid var(--suna); border-radius:20px;
+  padding:4px 13px; font-size:12.5px; font-weight:600; color:var(--water-ink); margin:0 0 4px;}
+
+/* ---------- caso de la Sección 2 ---------- */
+.caso{border:1px solid var(--suna); border-radius:10px; padding:24px 26px 20px; margin:18px 0; background:var(--kumo);}
+.caso.cupo{background:transparent; border-style:dashed;}
+.caso .ch{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:6px;}
+.caso .ch h4{margin:0; font-size:21px; color:var(--void); font-family:'Cormorant Garamond',Georgia,serif; font-weight:500;}
+.caso .quien{font-size:13px; color:var(--hai); font-weight:600;}
+.caso :is(h4,h5):not(.ch h4){margin:18px 0 5px; font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--water-ink);}
+.caso p{font-size:15.5px; margin:0 0 9px;}
+.caso .mixto{background:var(--kami); border-radius:8px; padding:14px 16px; margin:6px 0 0;}
+.caso .mixto p{margin:0 0 8px; font-size:15px;} .caso .mixto p:last-child{margin-bottom:0;}
+.caso .mixto b{color:var(--void);}
+/* ---------- campo visual de la ficha: una figura por caso ---------- */
+.caso figure.visual{margin:16px 0 4px; padding:14px 16px 12px; background:var(--kumo);
+  border:1px solid var(--suna); border-left:3px solid var(--wind); border-radius:8px;}
+.caso figure.visual img{display:block; width:100%; height:auto; max-width:760px; margin:0 auto;
+  background:#fff; border-radius:4px;}
+.caso figcaption{font-size:13.5px; color:var(--hai); margin-top:12px; line-height:1.55;}
+.caso figcaption .vtipo{display:block; font-size:11.5px; font-weight:700; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--wind-ink); margin-bottom:7px;}
+.caso figcaption .vlinea{display:block; margin-bottom:4px;}
+.caso figcaption .vlinea b{color:var(--sumi); font-weight:700;}
+.caso figcaption .vcred{display:block; margin-top:9px; padding-top:8px;
+  border-top:1px dashed var(--suna); font-size:12.5px; font-style:italic;}
+.caso .porta{margin:18px 0 0; padding-top:12px; border-top:1px dashed var(--suna); font-size:13.5px; color:var(--hai);}
+.caso .porta b{color:var(--sumi);}
+
+/* ---------- firma de autoría al pie de cada tarjeta ---------- */
+.tarjeta .firma{margin:14px 0 0; padding-top:10px; border-top:1px dashed var(--suna);
+  font-size:13px; color:var(--hai); line-height:1.5;}
+.tarjeta .firma b{color:var(--sumi); font-weight:500;}
+
+/* ---------- el caso completo, plegado ---------- */
+.casomas{margin:18px 0 0; padding-top:14px; border-top:1px dashed var(--suna);}
+.casomas > summary{cursor:pointer; font-size:14px; font-weight:700; letter-spacing:.04em;
+  text-transform:uppercase; color:var(--water-ink); list-style:none; padding:4px 0;}
+.casomas > summary::-webkit-details-marker{display:none;}
+.casomas > summary::before{content:"+ "; font-weight:700;}
+.casomas[open] > summary::before{content:"– ";}
+.casomas > summary:hover{color:var(--void);}
+.casomas > summary:focus-visible{outline:2px solid var(--water); outline-offset:3px; border-radius:3px;}
+
+.volver-tabla{margin:14px 0 0; font-size:13.5px;}
+.volver-tabla a{text-decoration:none; border-bottom:1px solid var(--suna);}
+
+/* ---------- lista de herramientas con enlace ---------- */
+.herr{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:18px 0 8px; padding:0; list-style:none;}
+.herr li{background:var(--kumo); border:1px solid var(--suna); border-radius:8px; padding:14px 16px; margin:0;}
+.herr li::before{display:none;}
+.herr b{display:block; color:var(--void); font-size:15.5px;}
+.herr span{display:block; font-size:14px; color:var(--hai); margin:3px 0 6px;}
+.herr b a{font-size:15.5px; color:var(--void); text-decoration:none; border-bottom:1px solid var(--suna);}
+.herr b a:hover{border-bottom-color:var(--water);}
+.caso .quien a{font-weight:700;}
+
+/* ---------- declaración única, al cierre ---------- */
+.declfin{background:var(--void); color:#cdd6dd; border-radius:10px; padding:26px 28px; margin:20px 0;}
+.declfin h3{color:#fff; margin:0 0 12px; font-size:19px; font-family:'Cormorant Garamond',Georgia,serif; font-weight:500;}
+.declfin p{font-size:14.8px; margin:0 0 11px; color:#cdd6dd;} .declfin p:last-child{margin-bottom:0;}
+.declfin b{color:#fff;}
+.declfin a{color:#9fd0e0;}
+
+/* ---------- créditos ---------- */
+.nombres{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 6px; padding:0; list-style:none;}
+.nombres li{background:var(--kumo); border:1px solid var(--suna); border-radius:20px; padding:6px 15px;
+  font-size:14.5px; color:var(--void); margin:0;}
+.nombres li::before{display:none;}
+
+/* ---------- tabla de decisión ---------- */
+.tablawrap{overflow-x:auto; margin:18px 0 8px; border:1px solid var(--suna); border-radius:9px; background:var(--kumo);}
+table.dec{border-collapse:collapse; width:100%; font-size:14.5px; min-width:700px;}
+table.dec th{text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--water-ink);
+  padding:13px 16px; border-bottom:1px solid var(--suna); font-weight:700; background:var(--kami);}
+table.dec td{padding:13px 16px; border-bottom:1px solid var(--suna); vertical-align:top; color:var(--sumi);}
+table.dec tr:last-child td{border-bottom:none;}
+table.dec td.h{font-weight:700; color:var(--void);}
+table.dec td.cuidado{color:var(--hai);}
+table.dec th.et{padding:13px 16px; border-bottom:1px solid var(--suna); vertical-align:top;
+  font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--water-ink); white-space:nowrap; text-align:left;}
+
+/* rótulo de tabla y otros textos solo para lectores de pantalla */
+.visually-hidden{position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;}
+
+/* el contenedor de la tabla recibe foco de teclado: hay que verlo */
+.tablawrap:focus-visible{outline:2px solid var(--water); outline-offset:3px;}
+table.dec a{font-weight:600;}
+
+/* ---------- capacidades de la Sección 3 ---------- */
+.caps{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:20px 0 6px;}
+.cap{background:var(--kumo); border:1px solid var(--suna); border-top:3px solid var(--fire-ink); border-radius:9px; padding:17px 19px;}
+.cap b{display:block; font-family:'Cormorant Garamond',Georgia,serif; font-weight:500; font-size:21px; color:var(--void); margin-bottom:5px;}
+.cap span{font-size:14.5px; color:var(--hai);}
+
+/* ---------- apéndice: el paso a paso ---------- */
+.pasos{counter-reset:paso; list-style:none; padding:0; margin:16px 0;}
+.pasos li{counter-increment:paso; position:relative; padding-left:44px; margin-bottom:14px; font-size:15.5px;}
+.pasos li::before{content:counter(paso); position:absolute; left:0; top:-1px; width:28px; height:28px;
+  display:flex; align-items:center; justify-content:center; border-radius:50%; background:var(--void); color:#fff;
+  font-size:14px; font-weight:700;}
+.pasos b{color:var(--void);}
+
+/* ---------- cómo citar la guía ---------- */
+.citar{background:var(--kumo); border:1px solid var(--suna); border-radius:10px;
+  padding:20px 24px; margin:22px 0;}
+.citar h3{margin-top:0;}
+.ref{font-size:15px; line-height:1.65; margin-left:22px; padding-left:26px; text-indent:-26px;}
+.ref b{display:inline; text-indent:0; color:var(--void); font-size:12.5px;
+  letter-spacing:.06em; text-transform:uppercase;}
+.hueco-url{background:#FDF6E7; border:1px dashed var(--earth); border-radius:5px;
+  padding:1px 7px; color:var(--earth-ink); font-style:italic; white-space:nowrap;}
+.notacita{font-size:13.5px; color:var(--hai); margin-top:14px; padding-top:12px;
+  border-top:1px dashed var(--suna);}
+
+/* ---------- el párrafo de síntesis que abre la Sección 2 ---------- */
+.sintesis-in{background:var(--kumo); border-left:3px solid var(--water); border-radius:0 8px 8px 0;
+  padding:16px 20px; margin:16px 0 4px; font-size:16.5px;}
+
+/* ---------- la lectura del conjunto, cierre de la Sección 2 ---------- */
+#hallazgo{border-top:3px solid var(--water); padding-top:22px;}
+.firma-cierre{margin-top:18px; padding-top:12px; border-top:1px dashed var(--suna);
+  font-size:13.5px; color:var(--hai);}
+
+/* ---------- cierre de la Sección 3 ---------- */
+.cierre{background:var(--void); color:#dbe3ea; border-radius:11px; padding:24px 26px;
+  margin:14px 0 0; font-size:17.5px; line-height:1.62;}
+
+/* ---------- índice lateral de la guía ---------- */
+.gnav{display:flex; flex-wrap:wrap; gap:8px; margin:20px 0 4px;}
+.gnav a{font-size:13px; font-weight:600; text-decoration:none; color:var(--water-ink);
+  border:1px solid var(--suna); border-radius:20px; padding:6px 14px; background:var(--kumo);}
+.gnav a:hover{border-color:var(--water);}
+
+/* ---------- responsive ---------- */
+@media(max-width:720px){
+  .gport h1{font-size:38px;} .gport .sub{font-size:24px;}
+  .tres, .caps, .herr{grid-template-columns:1fr;}
+  .tarjeta{grid-template-columns:1fr; gap:14px;}
+  .tarjeta .pull{font-size:22px;}
+  .caso{padding:20px 18px 16px;}
+
+  /* La tabla deja de ser tabla: en un teléfono se veían dos columnas de cinco,
+     sin ninguna señal de que hubiera tres más hacia la derecha. */
+  .tablawrap{overflow:visible; border:0;}
+  table.dec{min-width:0; display:block;}
+  table.dec thead{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+  table.dec tbody, table.dec tr, table.dec th, table.dec td{display:block; width:auto;}
+  table.dec tr{background:var(--kumo); border:1px solid var(--suna); border-radius:9px;
+    padding:14px 16px; margin-bottom:12px;}
+  table.dec th, table.dec td{border:0; padding:0 0 8px; white-space:normal;}
+  table.dec td:last-child{padding-bottom:0;}
+  table.dec th.et{font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--water-ink); padding-bottom:4px;}
+  table.dec td::before{display:block; font-size:11.5px;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--hai); margin-bottom:2px;}
+  body[data-lang="es"] table.dec td::before{content:attr(data-rot-es);}
+  body[data-lang="en"] table.dec td::before{content:attr(data-rot-en);}
+}
+
+/* ---------- impresión: de aquí sale el PDF ---------- */
+@media print{
+  @page{size:A4; margin:18mm 16mm;}
+  html{font-size:10.5pt;}
+  body{background:#fff; font-size:10.5pt; line-height:1.45;}
+  .wrap{max-width:none; padding:0;}
+  .langbar, .subnav, .pager, .gnav, .banner, .noprint{display:none !important;}
+  a{color:var(--sumi); text-decoration:none;}
+  a[href^="http"]::after{content:" (" attr(href) ")"; font-size:8.5pt; color:#5A5C57; word-break:break-all;}
+  section{border-top:1px solid #DEDFD9; padding:16pt 0 0; break-inside:auto;}
+  h2{break-after:avoid;} h3, h4{break-after:avoid;}
+  .gport{padding:0 0 18pt; break-after:page;}
+  .gport h1{font-size:30pt;}
+  .tarjeta, .caso, .cap, .tres li{break-inside:avoid; background:#fff; box-shadow:none;}
+  .mazo .tarjeta{margin-bottom:10pt;}
+  .herr{display:block;} .herr li{margin-bottom:7pt;}
+  .caps{display:block;} .cap{margin-bottom:8pt;}
+  .tres{display:block;} .tres li{margin-bottom:8pt;}
+  .tablawrap{overflow:visible; border:1px solid #DEDFD9;}
+  table.dec{min-width:0; font-size:9pt;}
+  .seccion-portada{break-before:page;}
+  footer{background:#fff; color:#5A5C57; border-top:1px solid #DEDFD9; padding:14pt 0 0;}
+  /* los navegadores no imprimen fondos: sin esto la declaración de uso de IA sale ilegible */
+  /* mismo bug que .declfin: sin fondo impreso, el cierre queda ilegible */
+  .cierre{background:#fff; color:var(--sumi); border-left:3px solid #DEDFD9; padding-left:14pt;}
+  #hallazgo, .citar{break-inside:avoid;}
+  p{orphans:3; widows:3;}
+  .declfin{background:#fff; color:var(--sumi); border:1px solid #DEDFD9;}
+  .declfin h3, .declfin b{color:var(--void);}
+  .declfin p, .declfin a{color:var(--sumi);}
+  #creditos{break-before:page;}
+  /* el caso completo se imprime abierto */
+  details.casomas{display:block;} details.casomas > summary{display:none;}
+  details.casomas > *{display:block !important;}
+  .caso figure.visual{break-inside:avoid; page-break-inside:avoid;
+    background:transparent; border:1px solid #ccc; border-left:2pt solid #456A5A; padding:8pt 10pt;}
+  .caso figure.visual img{max-width:100%; height:auto; max-height:160mm;}
+  .caso figcaption{color:#333;}
+}
+
+/* ---------- etiqueta de la columna izquierda (alinea arriba con el cuerpo) ---------- */
+.tarjeta .izq > h4{margin:0; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.12em;
+  color:var(--el-ink,var(--water-ink)); line-height:1.35;}
+
+/* ---------- las tres preguntas, en horizontal con flechas ---------- */
+.preguntas{display:flex; align-items:stretch; gap:10px; margin:20px 0 14px;}
+.preguntas .pbox{flex:1 1 0; min-width:0; background:var(--kumo); border:1px solid var(--suna);
+  border-top:3px solid var(--water); border-radius:9px; padding:16px 18px;}
+.preguntas .pn{display:block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--water-ink); margin-bottom:7px;}
+.preguntas .pq{display:block; font-family:'Cormorant Garamond',Georgia,serif; font-size:23px; line-height:1.18;
+  color:var(--void); margin-bottom:9px;}
+.preguntas .pd{display:block; font-size:14.5px; color:var(--hai); margin-bottom:9px;}
+.preguntas .pe{display:block; font-size:14px; color:var(--sumi);
+  border-top:1px dashed var(--suna); padding-top:9px;}
+.preguntas .flecha{flex:0 0 auto; display:flex; align-items:center; color:var(--water);
+  font-size:27px; font-weight:700; line-height:1;}
+
+/* ---------- tema de la tesis, bajo el título del caso ---------- */
+.caso .tema{margin:0 0 12px; font-size:13.5px; color:var(--hai);}
+.caso .tema b{color:var(--sumi); font-weight:600;}
+
+@media (max-width:760px){
+  .preguntas{flex-direction:column;}
+  .preguntas .flecha{transform:rotate(90deg); justify-content:center; padding:3px 0;}
+}
+@media print{
+  .preguntas{display:block;} .preguntas .pbox{break-inside:avoid; margin-bottom:8pt;}
+  .preguntas .flecha{display:none;}
+}
+
+/* ---------- variante 2×2: los cuatro costos ---------- */
+.mazo.dos{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.mazo.dos .tarjeta{grid-template-columns:1fr; gap:12px; margin:0;}
+@media (max-width:760px){ .mazo.dos{grid-template-columns:1fr;} }
+@media print{ .mazo.dos{display:block;} .mazo.dos .tarjeta{margin-bottom:10pt;} }
+
+/* ---------- iconos de la Sección 1, junto al título ---------- */
+.tarjeta .izq > h4.conico{display:flex; align-items:center; gap:9px;}
+.tarjeta .izq .ico{flex:0 0 auto; width:18px; height:18px; margin:0;
+  fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;
+  color:var(--el-ink,var(--water-ink));}
+
+/* ---------- casos plegables ---------- */
+details.caso > summary{cursor:pointer; list-style:none; margin-bottom:0;}
+details.caso > summary::-webkit-details-marker{display:none;}
+details.caso > summary::marker{content:'';}
+details.caso > summary::after{content:'+'; flex:0 0 auto; font-size:22px; line-height:1;
+  color:var(--water-ink); font-weight:400;}
+details.caso[open] > summary::after{content:'\2212';}
+details.caso[open] > summary{margin-bottom:6px; padding-bottom:10px; border-bottom:1px solid var(--suna);}
+details.caso > summary:focus-visible{outline:2px solid var(--water); outline-offset:3px; border-radius:6px;}
+details.caso > summary:hover h4{color:var(--water-ink);}
+@media print{
+  details.caso > summary::after{display:none;}
+  details.caso > summary{border-bottom:1px solid #DEDFD9; margin-bottom:6px; padding-bottom:8pt;}
+}
+
+/* ---------- el nombre baja bajo el título, en los seis casos ---------- */
+.caso .ch{row-gap:5px;}
+.caso .ch h4{order:1; flex:1 1 auto;}
+details.caso > summary.ch::after{order:2;}
+.caso .quien{order:3; flex:0 0 100%;}
+
+/* ---------- etapa de investigación, sobre cada herramienta ---------- */
+.herr .fase{display:block; font-size:11.5px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--water-ink); margin:0 0 5px;}
