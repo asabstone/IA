@@ -23,6 +23,10 @@
       b.classList.toggle('active', b.getAttribute('data-set') === l);
       b.setAttribute('aria-pressed', b.getAttribute('data-set') === l ? 'true' : 'false');
     });
+    document.querySelectorAll('img[data-alt-es][data-alt-en]').forEach(function (img) {
+      var a = img.getAttribute('data-alt-' + l);
+      if (a) img.setAttribute('alt', a);
+    });
     try { localStorage.setItem('lang', l); } catch (e) { /* ignore */ }
   }
 
